@@ -1,0 +1,23 @@
+@startuml
+|Pengguna|
+start
+:Akses halaman Login;
+|Sistem|
+:Tampilkan form Login;
+|Pengguna|
+:Masukkan Email dan Password;
+:Klik tombol Login;
+|Sistem|
+:Validasi kredensial;
+if (Kredensial valid?) then (Ya)
+  :Buat sesi login;
+  :Arahkan ke Dashboard sesuai role;
+else (Tidak)
+  :Tampilkan pesan error (Kredensial salah);
+  |Pengguna|
+  :Kembali ke form Login;
+  detach
+endif
+|Sistem|
+stop
+@enduml

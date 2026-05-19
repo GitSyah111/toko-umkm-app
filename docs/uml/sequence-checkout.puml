@@ -1,0 +1,41 @@
+@startuml
+actor Pembeli
+participant View
+participant Controller
+participant EkspedisiAPI
+participant Model
+participant Database
+
+Pembeli -> View : Pilih item di keranjang\nKlik "Checkout"
+View -> Controller : GET /checkout
+Controller -> Model : get selected cart items
+Model -> Database : query
+Database --> Model : results
+Model --> Controller : results
+Controller --> View : Return halaman Checkout
+View --> Pembeli : Tampilkan halaman Checkout (Ringkasan)
+
+Pembeli -> View : Pilih/Masukkan alamat pengiriman
+View -> Controller : POST /checkout/ongkir (alamat)
+Controller -> EkspedisiAPI : get_shipping_options(origin, dest, weight)
+EkspedisiAPI --> Controller : return options & cost
+Controller --> View : Return opsi kurir & ongkos
+View --> Pembeli : Tampilkan opsi kurir & ongkos kirim
+
+Pembeli -> View : Pilih kurir/layanan pengiriman
+View -> Controller : POST /checkout/courier (pilihan)
+Controller -> Controller : Hitung total (Harga + Ongkir)
+Controller --> View : Return total & opsi pembayaran
+View --> Pembeli : Tampilkan total akhir & opsi pembayaran
+
+Pembeli -> View : Pilih metode pembayaran\nKonfirmasi Checkout
+View -> Controller : POST /checkout/process (data pesanan)
+Controller -> Model : create_order(data)
+Model -> Database : insert order & order_items
+Database --> Model : success
+Model --> Controller : success
+Controller -> Controller : Set status "Menunggu Pembayaran"
+Controller -> Controller : Kirim notifikasi pembayaran
+Controller --> View : Redirect to payment page
+View --> Pembeli : Tampilkan instruksi pembayaran
+@enduml

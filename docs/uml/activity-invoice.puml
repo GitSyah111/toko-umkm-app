@@ -1,0 +1,14 @@
+@startuml
+|Pengguna (Pembeli/Penjual)|
+start
+:Akses halaman Daftar Pesanan atau Detail Pesanan;
+:Pilih salah satu pesanan yang sudah dibayar/selesai;
+:Klik tombol "Cetak/Unduh Invoice";
+|Sistem|
+:Ambil data detail pesanan (Item, Harga, Ongkir, Pembeli, Penjual);
+:Generate dokumen Invoice (HTML/PDF);
+:Tampilkan preview atau mulai unduh file;
+|Pengguna (Pembeli/Penjual)|
+:Simpan atau cetak file Invoice;
+stop
+@enduml

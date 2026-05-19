@@ -1,0 +1,31 @@
+@startuml
+actor Admin
+participant View
+participant Controller
+participant Model
+participant Database
+
+Admin -> View : Login & Akses menu Dashboard Kinerja Platform
+View -> Controller : GET /admin/dashboard
+
+Controller -> Model : get platform statistics()
+Model -> Database : query system-wide data
+Database --> Model : results
+Model --> Controller : results
+
+Controller -> Controller : Kalkulasi GMV, Total Pengguna Aktif, Toko Baru, Transaksi Berhasil
+Controller --> View : Return data dashboard
+View --> Admin : Tampilkan grafik dan metrik utama
+
+Admin -> View : Pilih filter rentang waktu
+View -> Controller : GET /admin/dashboard?date_range=...
+Controller -> Model : get filtered data
+Model -> Database : query
+Database --> Model : results
+Model --> Controller : results
+Controller -> Controller : Kalkulasi ulang dengan filter
+Controller --> View : Return updated data
+View --> Admin : Perbarui tampilan grafik & metrik
+
+Admin -> View : Lakukan monitoring kinerja platform
+@enduml

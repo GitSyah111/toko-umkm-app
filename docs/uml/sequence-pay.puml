@@ -1,0 +1,34 @@
+@startuml
+actor Pembeli
+participant View
+participant Controller
+participant PaymentGateway
+participant Model
+participant Database
+
+Pembeli -> View : Menerima instruksi pembayaran
+View --> Pembeli : Tampilkan instruksi
+
+Pembeli -> PaymentGateway : Lakukan pembayaran via metode yang dipilih
+PaymentGateway -> PaymentGateway : Proses transaksi
+
+PaymentGateway -> Controller : POST /webhook/payment (callback data)
+Controller -> Controller : Validasi signature & data
+
+alt Pembayaran Sukses?
+    Controller -> Model : update order status("Dibayar/Diproses")
+    Model -> Database : update status
+    Database --> Model : success
+    Model --> Controller : success
+    Controller -> Controller : Kirim notifikasi sukses ke Pembeli
+    Controller -> Controller : Kirim notifikasi pesanan baru ke Penjual
+else Tidak / Kadaluarsa
+    Controller -> Model : update order status("Expired/Dibatalkan")
+    Model -> Database : update status
+    Database --> Model : success
+    Model --> Controller : success
+    Controller -> Controller : Kirim notifikasi gagal ke Pembeli
+end
+
+Controller --> PaymentGateway : HTTP 200 OK Response
+@enduml

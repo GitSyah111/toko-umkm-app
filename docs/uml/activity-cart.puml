@@ -1,0 +1,34 @@
+@startuml
+|Pembeli|
+start
+:Melihat detail produk;
+:Klik "Tambah ke Keranjang";
+|Sistem|
+:Periksa stok produk;
+if (Stok mencukupi?) then (Ya)
+  :Tambahkan item ke keranjang;
+  :Tampilkan notifikasi berhasil;
+else (Tidak)
+  :Tampilkan pesan error (Stok habis);
+  detach
+endif
+|Pembeli|
+:Buka halaman Keranjang Belanja;
+|Sistem|
+:Tampilkan daftar item di keranjang;
+|Pembeli|
+:Pilih aksi (Ubah Kuantitas / Hapus Item / Lanjut);
+if (Aksi?) then (Ubah Kuantitas)
+  :Input jumlah baru;
+  |Sistem|
+  :Perbarui kuantitas & hitung ulang total harga;
+elseif (Hapus Item)
+  :Pilih hapus item;
+  |Sistem|
+  :Hapus item dari keranjang & hitung ulang total;
+else (Lanjut Checkout)
+  |Sistem|
+  :Arahkan ke halaman Checkout;
+endif
+stop
+@enduml

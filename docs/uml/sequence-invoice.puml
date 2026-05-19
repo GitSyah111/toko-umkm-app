@@ -1,0 +1,21 @@
+@startuml
+actor Pengguna
+participant View
+participant Controller
+participant Model
+participant Database
+
+Pengguna -> View : Akses halaman Pesanan\nPilih pesanan selesai/dibayar\nKlik "Cetak/Unduh Invoice"
+View -> Controller : GET /orders/{id}/invoice
+
+Controller -> Model : get invoice data(id)
+Model -> Database : query (Item, Harga, Ongkir, Pembeli, Penjual)
+Database --> Model : result
+Model --> Controller : result
+
+Controller -> Controller : Generate dokumen Invoice (HTML/PDF)
+Controller --> View : Return file/preview Invoice
+View --> Pengguna : Tampilkan preview atau mulai unduh
+
+Pengguna -> View : Simpan atau cetak file Invoice
+@enduml

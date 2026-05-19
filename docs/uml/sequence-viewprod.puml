@@ -1,0 +1,35 @@
+@startuml
+actor Pembeli
+participant View
+participant Controller
+participant Model
+participant Database
+
+Pembeli -> View : Buka halaman pencarian/katalog
+View --> Pembeli : Tampilkan halaman
+
+Pembeli -> View : Masukkan kata kunci / kategori
+View -> Controller : GET /produk/search?q=keyword
+
+Controller -> Model : search produk(keyword, kategori)
+Model -> Database : query products
+Database --> Model : results
+Model --> Controller : results
+
+alt Produk ditemukan?
+    Controller --> View : Return hasil pencarian
+    View --> Pembeli : Tampilkan hasil pencarian produk
+else Tidak ditemukan
+    Controller --> View : Return empty result
+    View --> Pembeli : Tampilkan pesan "Produk tidak ditemukan"
+end
+
+Pembeli -> View : Klik salah satu produk
+View -> Controller : GET /produk/{id}
+Controller -> Model : find(id)
+Model -> Database : query product
+Database --> Model : result
+Model --> Controller : result
+Controller --> View : Return product details
+View --> Pembeli : Tampilkan halaman detail produk
+@enduml

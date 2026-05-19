@@ -1,0 +1,13 @@
+@startuml
+|Penjual|
+start
+:Login ke akun Penjual;
+:Akses menu Dashboard Toko;
+|Sistem|
+:Ambil data statistik toko (Total Penjualan, Pesanan Baru, Stok Menipis);
+:Kalkulasi ringkasan performa (Harian/Mingguan/Bulanan);
+:Tampilkan grafik dan ringkasan angka pada Dashboard;
+|Penjual|
+:Analisis data penjualan dan kinerja toko;
+stop
+@enduml

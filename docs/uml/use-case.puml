@@ -1,0 +1,65 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Pembeli
+actor Penjual
+actor Admin
+
+rectangle "Aplikasi E-Commerce UMKM" {
+    
+    package "Autentikasi" {
+        usecase "Login" as UC_Login
+        usecase "Registrasi" as UC_Register
+    }
+
+    package "Manajemen Toko & Produk" {
+        usecase "Membuat & Mengelola Toko" as UC_Toko
+        usecase "Mengelola Produk (CRUD)" as UC_Produk
+    }
+
+    package "Transaksi (Belanja)" {
+        usecase "Mencari & Melihat Produk" as UC_ViewProd
+        usecase "Mengelola Keranjang Belanja" as UC_Cart
+        usecase "Melakukan Checkout" as UC_Checkout
+        usecase "Melakukan Pembayaran" as UC_Pay
+    }
+
+    package "Manajemen Pesanan" {
+        usecase "Memproses Pesanan (Status)" as UC_ProcessOrder
+        usecase "Membatalkan Pesanan" as UC_CancelOrder
+    }
+
+    package "Pelaporan & Dokumen Eksekusi" {
+        usecase "Mencetak Invoice" as UC_Invoice
+        usecase "Mencetak Label Pengiriman" as UC_Label
+        usecase "Melihat Dashboard Analitik Toko" as UC_SellerDash
+        usecase "Mengunduh Laporan Keuangan (Excel/PDF)" as UC_ReportKeuangan
+        usecase "Melihat Laporan Kinerja Platform (GMV)" as UC_AdminDash
+    }
+}
+
+Pembeli --> UC_Login
+Pembeli --> UC_Register
+Pembeli --> UC_ViewProd
+Pembeli --> UC_Cart
+Pembeli --> UC_Checkout
+Pembeli --> UC_Pay
+Pembeli --> UC_Invoice
+Pembeli --> UC_CancelOrder
+
+Penjual --> UC_Login
+Penjual --> UC_Register
+Penjual --> UC_Toko
+Penjual --> UC_Produk
+Penjual --> UC_ProcessOrder
+Penjual --> UC_CancelOrder
+Penjual --> UC_Invoice
+Penjual --> UC_Label
+Penjual --> UC_SellerDash
+Penjual --> UC_ReportKeuangan
+
+Admin --> UC_Login
+Admin --> UC_AdminDash
+
+@enduml

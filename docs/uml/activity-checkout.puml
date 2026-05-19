@@ -1,0 +1,24 @@
+@startuml
+|Pembeli|
+start
+:Pilih item di keranjang dan klik "Checkout";
+|Sistem|
+:Tampilkan halaman Checkout (Ringkasan Pesanan);
+|Pembeli|
+:Pilih/Masukkan alamat pengiriman;
+|Sistem|
+:Hitung opsi ongkos kirim berdasarkan lokasi;
+:Tampilkan opsi kurir & ongkos kirim;
+|Pembeli|
+:Pilih kurir/layanan pengiriman;
+|Sistem|
+:Hitung total akhir (Harga barang + Ongkir);
+:Tampilkan opsi metode pembayaran;
+|Pembeli|
+:Pilih metode pembayaran;
+:Konfirmasi Checkout (Buat Pesanan);
+|Sistem|
+:Buat pesanan dengan status "Menunggu Pembayaran";
+:Kirim notifikasi untuk pembayaran;
+stop
+@enduml

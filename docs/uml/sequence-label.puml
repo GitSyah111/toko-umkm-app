@@ -1,0 +1,21 @@
+@startuml
+actor Penjual
+participant View
+participant Controller
+participant Model
+participant Database
+
+Penjual -> View : Akses halaman Daftar Pesanan\nPilih pesanan siap dikirim\nKlik "Cetak Label Pengiriman"
+View -> Controller : GET /seller/orders/{id}/label
+
+Controller -> Model : get shipping data(id)
+Model -> Database : query (Alamat Pembeli, Ekspedisi, Resi, Penjual)
+Database --> Model : result
+Model --> Controller : result
+
+Controller -> Controller : Generate layout Label Pengiriman
+Controller --> View : Return HTML/PDF Label
+View --> Penjual : Tampilkan layout untuk dicetak
+
+Penjual -> View : Kirim perintah cetak ke Printer\nTempelkan label pada paket
+@enduml

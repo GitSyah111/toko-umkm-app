@@ -1,0 +1,32 @@
+@startuml
+actor Pengguna
+participant View
+participant Controller
+participant Model
+participant Database
+
+Pengguna -> View : Akses halaman Registrasi
+View --> Pengguna : Tampilkan form Registrasi
+
+Pengguna -> View : Pilih role, masukkan data diri\nKlik tombol Daftar
+View -> Controller : POST /register (data)
+
+Controller -> Controller : Validasi input data
+Controller -> Model : check existing email
+Model -> Database : query user by email
+Database --> Model : return result
+Model --> Controller : return result
+
+alt Data valid & Email belum terdaftar?
+    Controller -> Model : create(data)
+    Model -> Database : insert user data
+    Database --> Model : success
+    Model --> Controller : success
+    Controller -> Controller : Kirim email verifikasi (opsional)
+    Controller --> View : Redirect with success message
+    View --> Pengguna : Tampilkan pesan sukses
+else Data tidak valid / Email terdaftar
+    Controller --> View : Redirect back with error validation
+    View --> Pengguna : Tampilkan pesan error validasi & form
+end
+@enduml

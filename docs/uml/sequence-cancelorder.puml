@@ -1,0 +1,44 @@
+@startuml
+actor Pengguna
+participant View
+participant Controller
+participant Model
+participant Database
+
+Pengguna -> View : Akses detail pesanan
+View -> Controller : GET /orders/{id}
+Controller -> Model : find(id)
+Model -> Database : query
+Database --> Model : result
+Model --> Controller : result
+Controller --> View : Return detail pesanan
+View --> Pengguna : Tampilkan detail pesanan
+
+alt Apakah pesanan masih bisa dibatalkan?
+    Pengguna -> View : Klik Batalkan Pesanan\nMasukkan alasan\nKonfirmasi
+    View -> Controller : POST /orders/{id}/cancel (alasan)
+    
+    Controller -> Model : update order status("Dibatalkan")
+    Model -> Database : update status & reason
+    
+    Controller -> Model : restock_products(order_id)
+    Model -> Database : update produk stok
+    
+    Controller -> Model : check payment status
+    Model -> Database : query status
+    Database --> Model : result
+    Model --> Controller : result
+    
+    alt Sudah dibayar?
+        Controller -> Controller : Proses pengembalian dana (Refund)
+    else Belum dibayar
+        Controller -> Controller : Tidak ada refund
+    end
+    
+    Controller -> Controller : Kirim notifikasi pembatalan
+    Controller --> View : Response success
+    View --> Pengguna : Tampilkan pesan sukses pembatalan
+else Tidak bisa dibatalkan
+    View --> Pengguna : Tampilkan pesan "Pesanan tidak dapat dibatalkan"
+end
+@enduml

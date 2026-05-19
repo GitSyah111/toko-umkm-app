@@ -1,0 +1,18 @@
+@startuml
+|Admin|
+start
+:Login ke panel Admin;
+:Akses menu Dashboard Kinerja Platform;
+|Sistem|
+:Ambil data keseluruhan sistem;
+:Kalkulasi Gross Merchandise Value (GMV);
+:Hitung total pengguna aktif, toko baru, dan transaksi berhasil;
+:Tampilkan data dalam bentuk grafik dan metrik utama;
+|Admin|
+:Pilih filter rentang waktu;
+|Sistem|
+:Perbarui tampilan grafik dan metrik sesuai filter;
+|Admin|
+:Lakukan monitoring kinerja platform;
+stop
+@enduml

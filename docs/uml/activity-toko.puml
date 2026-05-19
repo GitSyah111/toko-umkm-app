@@ -1,0 +1,27 @@
+@startuml
+|Penjual|
+start
+:Pilih menu Manajemen Toko;
+|Sistem|
+:Periksa status toko pengguna;
+if (Toko sudah ada?) then (Belum)
+  |Sistem|
+  :Tampilkan form Buat Toko;
+  |Penjual|
+  :Masukkan detail toko (Nama, Alamat, Deskripsi, dll);
+  :Simpan data;
+  |Sistem|
+  :Validasi dan simpan profil toko;
+else (Sudah)
+  |Sistem|
+  :Tampilkan profil toko saat ini;
+  |Penjual|
+  :Edit detail toko;
+  :Simpan perubahan;
+  |Sistem|
+  :Validasi dan perbarui profil toko;
+endif
+|Sistem|
+:Tampilkan pesan sukses;
+stop
+@enduml

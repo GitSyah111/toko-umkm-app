@@ -1,0 +1,20 @@
+@startuml
+|Pembeli|
+start
+:Menerima instruksi pembayaran;
+:Lakukan pembayaran via metode yang dipilih;
+|Sistem Payment Gateway|
+:Proses transaksi pembayaran;
+:Kirim webhook/callback ke Sistem E-Commerce;
+|Sistem|
+:Validasi status pembayaran;
+if (Pembayaran Sukses?) then (Ya)
+  :Ubah status pesanan menjadi "Dibayar / Diproses";
+  :Kirim notifikasi sukses ke Pembeli;
+  :Kirim notifikasi pesanan baru ke Penjual;
+else (Tidak/Kadaluarsa)
+  :Batalkan pesanan (Expired);
+  :Kirim notifikasi gagal ke Pembeli;
+endif
+stop
+@enduml

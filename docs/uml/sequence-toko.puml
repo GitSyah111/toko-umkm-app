@@ -1,0 +1,40 @@
+@startuml
+actor Penjual
+participant View
+participant Controller
+participant Model
+participant Database
+
+Penjual -> View : Pilih menu Manajemen Toko
+View -> Controller : GET /toko
+
+Controller -> Model : check existing toko (user_id)
+Model -> Database : query toko
+Database --> Model : result
+Model --> Controller : result
+
+alt Toko belum ada?
+    Controller --> View : Tampilkan form Buat Toko
+    View --> Penjual : Form Buat Toko
+    Penjual -> View : Masukkan detail toko\nSimpan data
+    View -> Controller : POST /toko (data)
+    Controller -> Controller : Validasi data
+    Controller -> Model : create(data)
+    Model -> Database : insert toko data
+    Database --> Model : success
+    Model --> Controller : success
+else Toko sudah ada?
+    Controller --> View : Tampilkan profil toko saat ini
+    View --> Penjual : Profil Toko
+    Penjual -> View : Edit detail toko\nSimpan perubahan
+    View -> Controller : PUT /toko/{id} (data)
+    Controller -> Controller : Validasi data
+    Controller -> Model : update(data)
+    Model -> Database : update toko data
+    Database --> Model : success
+    Model --> Controller : success
+end
+
+Controller --> View : Redirect with success message
+View --> Penjual : Tampilkan pesan sukses
+@enduml

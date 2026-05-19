@@ -1,0 +1,53 @@
+@startuml
+actor Penjual
+participant View
+participant Controller
+participant Model
+participant Database
+
+Penjual -> View : Akses halaman Manajemen Produk
+View -> Controller : GET /produk
+Controller -> Model : get produk by toko_id
+Model -> Database : query
+Database --> Model : results
+Model --> Controller : results
+Controller --> View : Tampilkan daftar produk
+View --> Penjual : Daftar produk toko
+
+Penjual -> View : Pilih aksi (Tambah/Ubah/Hapus)
+
+alt Aksi = Tambah
+    View -> Controller : GET /produk/create
+    Controller --> View : Form Tambah Produk
+    View --> Penjual : Tampilkan form Tambah
+    Penjual -> View : Masukkan data & Simpan
+    View -> Controller : POST /produk (data)
+    Controller -> Controller : Validasi data
+    Controller -> Model : create(data)
+    Model -> Database : insert produk
+    Database --> Model : success
+    Model --> Controller : success
+else Aksi = Ubah
+    View -> Controller : GET /produk/{id}/edit
+    Controller --> View : Form Edit Produk
+    View --> Penjual : Tampilkan form Edit
+    Penjual -> View : Perbarui data & Simpan
+    View -> Controller : PUT /produk/{id} (data)
+    Controller -> Controller : Validasi data
+    Controller -> Model : update(data)
+    Model -> Database : update produk
+    Database --> Model : success
+    Model --> Controller : success
+else Aksi = Hapus
+    View --> Penjual : Tampilkan konfirmasi hapus
+    Penjual -> View : Konfirmasi hapus
+    View -> Controller : DELETE /produk/{id}
+    Controller -> Model : delete/deactivate(id)
+    Model -> Database : update/delete produk
+    Database --> Model : success
+    Model --> Controller : success
+end
+
+Controller --> View : Redirect with success message
+View --> Penjual : Tampilkan pesan sukses & Perbarui daftar produk
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+|Pengguna (Pembeli/Penjual)|
+start
+:Akses detail pesanan;
+|Sistem|
+:Periksa status pesanan saat ini;
+if (Apakah pesanan masih bisa dibatalkan?) then (Ya)
+  |Pengguna (Pembeli/Penjual)|
+  :Klik tombol Batalkan Pesanan;
+  :Pilih/masukkan alasan pembatalan;
+  :Konfirmasi pembatalan;
+  |Sistem|
+  :Ubah status pesanan menjadi "Dibatalkan";
+  :Pulihkan stok produk;
+  if (Sudah dibayar?) then (Ya)
+    :Proses pengembalian dana (Refund);
+  else (Tidak)
+  endif
+  :Kirim notifikasi pembatalan ke pihak terkait;
+else (Tidak)
+  |Sistem|
+  :Tampilkan pesan "Pesanan tidak dapat dibatalkan";
+endif
+stop
+@enduml

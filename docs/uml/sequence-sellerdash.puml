@@ -1,0 +1,21 @@
+@startuml
+actor Penjual
+participant View
+participant Controller
+participant Model
+participant Database
+
+Penjual -> View : Login & Akses menu Dashboard Toko
+View -> Controller : GET /seller/dashboard
+
+Controller -> Model : get statistics(toko_id)
+Model -> Database : query Total Penjualan, Pesanan Baru, Stok Menipis
+Database --> Model : results
+Model --> Controller : results
+
+Controller -> Controller : Kalkulasi ringkasan performa (Harian/Mingguan/Bulanan)
+Controller --> View : Return data dashboard
+View --> Penjual : Tampilkan grafik dan ringkasan angka
+
+Penjual -> View : Analisis data penjualan & kinerja toko
+@enduml

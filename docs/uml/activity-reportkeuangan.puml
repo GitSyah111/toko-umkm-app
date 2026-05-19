@@ -1,0 +1,15 @@
+@startuml
+|Penjual|
+start
+:Akses menu Laporan Keuangan;
+:Pilih rentang waktu laporan (Misal: 1 Bulan terakhir);
+:Pilih format file (Excel / PDF);
+:Klik "Unduh Laporan";
+|Sistem|
+:Kueri data transaksi selesai dan rincian pendapatan toko;
+:Format data ke dalam Excel atau PDF;
+:Berikan respons berupa file untuk diunduh;
+|Penjual|
+:Terima file unduhan laporan;
+stop
+@enduml

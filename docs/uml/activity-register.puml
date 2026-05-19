@@ -1,0 +1,25 @@
+@startuml
+|Pengguna|
+start
+:Akses halaman Registrasi;
+|Sistem|
+:Tampilkan form Registrasi;
+|Pengguna|
+:Pilih role (Pembeli / Penjual);
+:Masukkan data diri (Nama, Email, Password, dll);
+:Klik tombol Daftar;
+|Sistem|
+:Validasi input data;
+if (Data valid & Email belum terdaftar?) then (Ya)
+  :Simpan data pengguna ke database;
+  :Kirim email verifikasi (opsional);
+  :Tampilkan pesan sukses;
+else (Tidak)
+  :Tampilkan pesan error validasi;
+  |Pengguna|
+  :Perbaiki input form;
+  detach
+endif
+|Sistem|
+stop
+@enduml

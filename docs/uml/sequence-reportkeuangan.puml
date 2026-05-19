@@ -1,0 +1,22 @@
+@startuml
+actor Penjual
+participant View
+participant Controller
+participant Model
+participant Database
+
+Penjual -> View : Akses menu Laporan Keuangan
+View --> Penjual : Tampilkan form laporan
+
+Penjual -> View : Pilih rentang waktu & format (Excel/PDF)\nKlik "Unduh Laporan"
+View -> Controller : GET /seller/reports/finance (params)
+
+Controller -> Model : get transactions & revenue(toko_id, date_range)
+Model -> Database : query completed transactions
+Database --> Model : results
+Model --> Controller : results
+
+Controller -> Controller : Format data ke Excel/PDF
+Controller --> View : Response return file
+View --> Penjual : Download file laporan
+@enduml

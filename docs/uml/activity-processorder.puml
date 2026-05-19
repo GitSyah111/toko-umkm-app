@@ -1,0 +1,30 @@
+@startuml
+|Penjual|
+start
+:Akses halaman Manajemen Pesanan;
+|Sistem|
+:Tampilkan daftar pesanan;
+|Penjual|
+:Pilih pesanan dengan status "Dibayar";
+if (Tolak atau Terima?) then (Tolak)
+  |Penjual|
+  :Masukkan alasan penolakan;
+  :Batalkan pesanan;
+  |Sistem|
+  :Ubah status pesanan menjadi "Dibatalkan";
+  :Proses pengembalian dana (Refund);
+  :Kirim notifikasi ke Pembeli;
+else (Terima)
+  |Penjual|
+  :Pilih proses pesanan;
+  |Sistem|
+  :Ubah status pesanan menjadi "Sedang Diproses";
+  |Penjual|
+  :Kemas barang dan siapkan pengiriman;
+  :Input resi pengiriman (jika tidak otomatis);
+  |Sistem|
+  :Ubah status pesanan menjadi "Dikirim";
+  :Kirim notifikasi ke Pembeli;
+endif
+stop
+@enduml

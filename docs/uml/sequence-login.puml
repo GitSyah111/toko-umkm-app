@@ -1,0 +1,27 @@
+@startuml
+actor Pengguna
+participant View
+participant Controller
+participant Model
+participant Database
+
+Pengguna -> View : Akses halaman Login
+View --> Pengguna : Tampilkan form Login
+
+Pengguna -> View : Masukkan Email & Password\nKlik tombol Login
+View -> Controller : POST /login (email, password)
+
+Controller -> Model : attempt(email, password)
+Model -> Database : query user by email
+Database --> Model : return user data
+Model --> Controller : return validation result
+
+alt Kredensial valid?
+    Controller -> Controller : Buat sesi login
+    Controller --> View : Redirect ke Dashboard
+    View --> Pengguna : Tampilkan Dashboard
+else Kredensial tidak valid
+    Controller --> View : Redirect back with error
+    View --> Pengguna : Tampilkan pesan error (Kredensial salah)
+end
+@enduml

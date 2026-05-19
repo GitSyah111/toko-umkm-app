@@ -1,0 +1,115 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+class User {
+  - id: int
+  - name: string
+  - email: string
+  - password: string
+  - role: string
+  + login(): boolean
+  + register(): boolean
+  + attempt(email, password): boolean
+}
+
+class Toko {
+  - id: int
+  - user_id: int
+  - nama_toko: string
+  - deskripsi: string
+  - alamat: string
+  + create(data): boolean
+  + update(data): boolean
+  + get_toko(user_id): Toko
+}
+
+class Produk {
+  - id: int
+  - toko_id: int
+  - nama_produk: string
+  - deskripsi: string
+  - harga: double
+  - stok: int
+  - gambar: string
+  - status: string
+  + get_produk_by_toko(toko_id): array
+  + create(data): boolean
+  + update(data): boolean
+  + delete(id): boolean
+  + check_stok(qty): boolean
+  + restock(qty): boolean
+}
+
+class Cart {
+  - id: int
+  - user_id: int
+  + get_cart(user_id): array
+}
+
+class CartItem {
+  - id: int
+  - cart_id: int
+  - product_id: int
+  - qty: int
+  + add_to_cart(user_id, product_id, qty): boolean
+  + update_qty(id, qty): boolean
+  + remove_item(id): boolean
+}
+
+class Order {
+  - id: int
+  - user_id: int
+  - toko_id: int
+  - tanggal_order: datetime
+  - status: string
+  - total_harga: double
+  - ongkir: double
+  - total_bayar: double
+  - alamat_pengiriman: string
+  - resi_pengiriman: string
+  - alasan_pembatalan: string
+  + create_order(data): boolean
+  + get_orders(toko_id): array
+  + update_status(status, reason): boolean
+  + set_resi(resi): boolean
+  + cancel_order(reason): boolean
+  + hitung_total(): double
+}
+
+class OrderItem {
+  - id: int
+  - order_id: int
+  - product_id: int
+  - harga_satuan: double
+  - qty: int
+  - subtotal: double
+}
+
+class Payment {
+  - id: int
+  - order_id: int
+  - metode_pembayaran: string
+  - jumlah: double
+  - tanggal_bayar: datetime
+  - status: string
+  + process_payment(): boolean
+  + update_status(status): boolean
+  + refund(): boolean
+}
+
+User "1" -- "0..1" Toko : memiliki >
+User "1" -- "1" Cart : mempunyai >
+User "1" -- "0..*" Order : melakukan >
+
+Toko "1" -- "0..*" Produk : menjual >
+Toko "1" -- "0..*" Order : menerima >
+
+Cart "1" -- "0..*" CartItem : berisi >
+CartItem "0..*" -- "1" Produk : merujuk >
+
+Order "1" -- "1..*" OrderItem : memiliki >
+OrderItem "0..*" -- "1" Produk : merujuk >
+Order "1" -- "0..1" Payment : pembayaran untuk >
+
+@enduml

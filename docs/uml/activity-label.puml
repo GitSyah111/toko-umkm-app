@@ -1,0 +1,15 @@
+@startuml
+|Penjual|
+start
+:Akses halaman Daftar Pesanan;
+:Pilih pesanan yang siap dikirim;
+:Klik tombol "Cetak Label Pengiriman";
+|Sistem|
+:Ambil data pengiriman (Alamat Pembeli, Ekspedisi, Resi, Penjual);
+:Generate layout Label Pengiriman;
+:Tampilkan layout untuk dicetak;
+|Penjual|
+:Kirim perintah cetak ke Printer;
+:Tempelkan label pada paket;
+stop
+@enduml

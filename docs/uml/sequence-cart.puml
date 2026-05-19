@@ -1,0 +1,60 @@
+@startuml
+actor Pembeli
+participant View
+participant Controller
+participant Model
+participant Database
+
+Pembeli -> View : Melihat detail produk\nKlik "Tambah ke Keranjang"
+View -> Controller : POST /cart/add (product_id, qty)
+
+Controller -> Model : check stok(product_id)
+Model -> Database : query stok
+Database --> Model : result
+Model --> Controller : result
+
+alt Stok mencukupi?
+    Controller -> Model : add_to_cart(user_id, product_id, qty)
+    Model -> Database : insert/update cart item
+    Database --> Model : success
+    Model --> Controller : success
+    Controller --> View : Response sukses
+    View --> Pembeli : Tampilkan notifikasi berhasil
+else Stok habis
+    Controller --> View : Response error
+    View --> Pembeli : Tampilkan pesan error (Stok habis)
+end
+
+Pembeli -> View : Buka halaman Keranjang Belanja
+View -> Controller : GET /cart
+Controller -> Model : get_cart(user_id)
+Model -> Database : query cart items
+Database --> Model : results
+Model --> Controller : results
+Controller --> View : Return cart items
+View --> Pembeli : Tampilkan daftar item di keranjang
+
+Pembeli -> View : Pilih aksi (Ubah/Hapus/Checkout)
+
+alt Aksi = Ubah Kuantitas
+    Pembeli -> View : Input jumlah baru
+    View -> Controller : PUT /cart/{id} (qty)
+    Controller -> Model : update_qty(id, qty)
+    Model -> Database : update cart item
+    Controller -> Controller : Hitung ulang total
+    Controller --> View : Return updated cart
+    View --> Pembeli : Tampilkan keranjang terbaru
+else Aksi = Hapus Item
+    Pembeli -> View : Pilih hapus item
+    View -> Controller : DELETE /cart/{id}
+    Controller -> Model : remove_item(id)
+    Model -> Database : delete cart item
+    Controller -> Controller : Hitung ulang total
+    Controller --> View : Return updated cart
+    View --> Pembeli : Tampilkan keranjang terbaru
+else Aksi = Lanjut Checkout
+    View -> Controller : GET /checkout
+    Controller --> View : Redirect ke Checkout
+    View --> Pembeli : Halaman Checkout
+end
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+|Pembeli|
+start
+:Buka halaman pencarian/katalog;
+:Masukkan kata kunci atau pilih kategori;
+|Sistem|
+:Cari produk sesuai filter/kata kunci;
+if (Produk ditemukan?) then (Ya)
+  :Tampilkan hasil pencarian produk;
+else (Tidak)
+  :Tampilkan pesan "Produk tidak ditemukan";
+  detach
+endif
+|Pembeli|
+:Klik salah satu produk;
+|Sistem|
+:Tampilkan halaman detail produk (Deskripsi, Harga, Stok, Review);
+stop
+@enduml

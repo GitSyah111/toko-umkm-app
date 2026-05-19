@@ -1,0 +1,37 @@
+@startuml
+|Penjual|
+start
+:Akses halaman Manajemen Produk;
+|Sistem|
+:Tampilkan daftar produk toko;
+|Penjual|
+:Pilih aksi (Tambah/Ubah/Hapus Produk);
+if (Aksi?) then (Tambah)
+  |Sistem|
+  :Tampilkan form Tambah Produk;
+  |Penjual|
+  :Masukkan data produk (Nama, Harga, Stok, Foto);
+  :Simpan;
+  |Sistem|
+  :Validasi & simpan produk baru;
+elseif (Ubah)
+  |Sistem|
+  :Tampilkan form Edit Produk;
+  |Penjual|
+  :Perbarui data produk;
+  :Simpan;
+  |Sistem|
+  :Validasi & perbarui data produk;
+else (Hapus)
+  |Sistem|
+  :Tampilkan konfirmasi hapus;
+  |Penjual|
+  :Konfirmasi hapus;
+  |Sistem|
+  :Hapus atau nonaktifkan produk;
+endif
+|Sistem|
+:Tampilkan pesan sukses;
+:Perbarui daftar produk;
+stop
+@enduml
