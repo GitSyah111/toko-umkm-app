@@ -1,0 +1,155 @@
+Project TokoUMKM {
+  database_type: 'MySQL'
+  Note: 'Toko UMKM Database ERD'
+}
+
+Table users {
+  id bigint [primary key, increment]
+  name varchar [not null]
+  email varchar [unique, not null]
+  password varchar [not null]
+  role varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [note: 'Soft delete']
+}
+
+Table tokos {
+  id bigint [primary key, increment]
+  user_id bigint [unique, not null]
+  nama_toko varchar [not null]
+  deskripsi text
+  alamat text
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [note: 'Soft delete']
+}
+
+Table produks {
+  id bigint [primary key, increment]
+  toko_id bigint [not null]
+  nama_produk varchar [not null]
+  deskripsi text
+  harga double [not null]
+  stok int [not null, default: 0]
+  gambar varchar
+  status varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [note: 'Soft delete']
+}
+
+Table carts {
+  id bigint [primary key, increment]
+  user_id bigint [unique, not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table cart_items {
+  id bigint [primary key, increment]
+  cart_id bigint [not null]
+  product_id bigint [not null]
+  qty int [not null, default: 1]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table orders {
+  id bigint [primary key, increment]
+  user_id bigint [not null]
+  toko_id bigint [not null]
+  tanggal_order datetime [not null]
+  status varchar [not null]
+  total_harga double [not null]
+  ongkir double [not null]
+  total_bayar double [not null]
+  alamat_pengiriman text [not null]
+  resi_pengiriman varchar
+  alasan_pembatalan text
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp [note: 'Soft delete']
+
+  indexes {
+    (toko_id, tanggal_order, status) [name: 'idx_orders_toko_date_status']
+    (tanggal_order, status) [name: 'idx_orders_date_status']
+  }
+}
+
+Table order_items {
+  id bigint [primary key, increment]
+  order_id bigint [not null]
+  product_id bigint [not null]
+  harga_satuan double [not null]
+  qty int [not null]
+  subtotal double [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table payments {
+  id bigint [primary key, increment]
+  order_id bigint [unique, not null]
+  metode_pembayaran varchar [not null]
+  jumlah double [not null]
+  tanggal_bayar datetime
+  status varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table wishlists {
+  id bigint [primary key, increment]
+  user_id bigint [not null]
+  product_id bigint [not null]
+  created_at timestamp
+  updated_at timestamp
+
+  indexes {
+    (user_id, product_id) [unique, name: 'idx_wishlists_user_product']
+  }
+}
+
+// Relasi tabel
+Ref: users.id - tokos.user_id // User (1) memiliki (0..1) Toko (One-to-One)
+Ref: users.id - carts.user_id // User (1) mempunyai (1) Cart (One-to-One)
+Ref: users.id < orders.user_id // User (1) melakukan (0..*) Order (One-to-Many)
+Ref: users.id < wishlists.user_id // User (1) memiliki (0..*) Wishlist (One-to-Many)
+Ref: tokos.id < produks.toko_id // Toko (1) menjual (0..*) Produk (One-to-Many)
+Ref: tokos.id < orders.toko_id // Toko (1) menerima (0..*) Order (One-to-Many)
+
+Ref: carts.id < cart_items.cart_id // Cart (1) berisi (0..*) CartItem (One-to-Many)
+Ref: produks.id < cart_items.product_id // CartItem (0..*) merujuk (1) Produk (Many-to-One)
+
+Ref: orders.id < order_items.order_id // Order (1) memiliki (1..*) OrderItem (One-to-Many)
+Ref: produks.id < order_items.product_id // OrderItem (0..*) merujuk (1) Produk (Many-to-One)
+Ref: produks.id < wishlists.product_id // Wishlist (0..*) merujuk (1) Produk (Many-to-One)
+Ref: orders.id - payments.order_id // Order (1) pembayaran untuk (0..1) Payment (One-to-One)
+
+Table toko_daily_summaries {
+  id bigint [primary key, increment]
+  toko_id bigint [not null]
+  tanggal date [not null]
+  total_revenue double [not null, default: 0]
+  total_orders int [not null, default: 0]
+  created_at timestamp
+  updated_at timestamp
+  
+  indexes {
+    (toko_id, tanggal) [unique, name: 'idx_toko_daily_date_unique']
+  }
+}
+
+Table platform_daily_summaries {
+  id bigint [primary key, increment]
+  tanggal date [unique, not null]
+  total_gmv double [not null, default: 0]
+  total_orders int [not null, default: 0]
+  total_active_tokos int [not null, default: 0]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Ref: tokos.id < toko_daily_summaries.toko_id // Toko (1) memiliki (0..*) TokoDailySummary (One-to-Many)
+

@@ -16,15 +16,15 @@ PaymentGateway -> Controller : POST /webhook/payment (callback data)
 Controller -> Controller : Validasi signature & data
 
 alt Pembayaran Sukses?
-    Controller -> Model : update order status("Dibayar/Diproses")
-    Model -> Database : update status
+    Controller -> Model : update_status("Dibayar/Diproses") (Order & Payment)
+    Model -> Database : update order & payment status
     Database --> Model : success
     Model --> Controller : success
     Controller -> Controller : Kirim notifikasi sukses ke Pembeli
     Controller -> Controller : Kirim notifikasi pesanan baru ke Penjual
 else Tidak / Kadaluarsa
-    Controller -> Model : update order status("Expired/Dibatalkan")
-    Model -> Database : update status
+    Controller -> Model : update_status("Expired/Dibatalkan") (Order & Payment)
+    Model -> Database : update order & payment status
     Database --> Model : success
     Model --> Controller : success
     Controller -> Controller : Kirim notifikasi gagal ke Pembeli

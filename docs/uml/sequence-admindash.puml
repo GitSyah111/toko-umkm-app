@@ -8,7 +8,7 @@ participant Database
 Admin -> View : Login & Akses menu Dashboard Kinerja Platform
 View -> Controller : GET /admin/dashboard
 
-Controller -> Model : get platform statistics()
+Controller -> Model : get_platform_statistics(null)
 Model -> Database : query system-wide data
 Database --> Model : results
 Model --> Controller : results
@@ -19,7 +19,7 @@ View --> Admin : Tampilkan grafik dan metrik utama
 
 Admin -> View : Pilih filter rentang waktu
 View -> Controller : GET /admin/dashboard?date_range=...
-Controller -> Model : get filtered data
+Controller -> Model : get_platform_statistics(date_range)
 Model -> Database : query
 Database --> Model : results
 Model --> Controller : results

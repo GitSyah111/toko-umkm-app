@@ -18,19 +18,21 @@ alt Apakah pesanan masih bisa dibatalkan?
     Pengguna -> View : Klik Batalkan Pesanan\nMasukkan alasan\nKonfirmasi
     View -> Controller : POST /orders/{id}/cancel (alasan)
     
-    Controller -> Model : update order status("Dibatalkan")
+    Controller -> Model : update_status("Dibatalkan", alasan)
     Model -> Database : update status & reason
     
     Controller -> Model : restock_products(order_id)
     Model -> Database : update produk stok
     
-    Controller -> Model : check payment status
+    Controller -> Model : get_payment_status(order_id)
     Model -> Database : query status
     Database --> Model : result
     Model --> Controller : result
     
     alt Sudah dibayar?
-        Controller -> Controller : Proses pengembalian dana (Refund)
+        Controller -> Model : refund() (Payment)
+        Model -> Database : update payment status
+        Database --> Model : success
     else Belum dibayar
         Controller -> Controller : Tidak ada refund
     end

@@ -19,23 +19,25 @@ Penjual -> View : Pilih pesanan (Status "Dibayar")
 alt Aksi = Tolak
     Penjual -> View : Masukkan alasan penolakan\nBatalkan pesanan
     View -> Controller : POST /seller/orders/{id}/reject (alasan)
-    Controller -> Model : update order status("Dibatalkan")
+    Controller -> Model : update_status("Dibatalkan", alasan)
     Model -> Database : update status & reason
-    Controller -> Controller : Proses pengembalian dana (Refund)
+    Controller -> Model : refund() (Payment)
+    Model -> Database : update payment status
     Controller -> Controller : Kirim notifikasi ke Pembeli
     Controller --> View : Response success
     View --> Penjual : Tampilkan pesan sukses
 else Aksi = Terima
     Penjual -> View : Pilih proses pesanan
     View -> Controller : POST /seller/orders/{id}/process
-    Controller -> Model : update order status("Sedang Diproses")
+    Controller -> Model : update_status("Sedang Diproses", "")
     Model -> Database : update status
     Controller --> View : Response success
     View --> Penjual : Tampilkan pesan sukses
 
     Penjual -> View : Kemas barang & Input resi pengiriman
     View -> Controller : POST /seller/orders/{id}/ship (resi)
-    Controller -> Model : update order status("Dikirim"), set resi
+    Controller -> Model : update_status("Dikirim", "")
+    Controller -> Model : set_resi(resi)
     Model -> Database : update status & resi
     Controller -> Controller : Kirim notifikasi ke Pembeli
     Controller --> View : Response success

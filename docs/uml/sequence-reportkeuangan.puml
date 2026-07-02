@@ -11,7 +11,7 @@ View --> Penjual : Tampilkan form laporan
 Penjual -> View : Pilih rentang waktu & format (Excel/PDF)\nKlik "Unduh Laporan"
 View -> Controller : GET /seller/reports/finance (params)
 
-Controller -> Model : get transactions & revenue(toko_id, date_range)
+Controller -> Model : get_transactions(toko_id, date_range)
 Model -> Database : query completed transactions
 Database --> Model : results
 Model --> Controller : results

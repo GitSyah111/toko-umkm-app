@@ -12,13 +12,13 @@ Pengguna -> View : Pilih role, masukkan data diri\nKlik tombol Daftar
 View -> Controller : POST /register (data)
 
 Controller -> Controller : Validasi input data
-Controller -> Model : check existing email
+Controller -> Model : find_by_email(email)
 Model -> Database : query user by email
 Database --> Model : return result
 Model --> Controller : return result
 
 alt Data valid & Email belum terdaftar?
-    Controller -> Model : create(data)
+    Controller -> Model : register(data)
     Model -> Database : insert user data
     Database --> Model : success
     Model --> Controller : success

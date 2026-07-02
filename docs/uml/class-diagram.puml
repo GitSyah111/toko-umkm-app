@@ -9,8 +9,9 @@ class User {
   - password: string
   - role: string
   + login(): boolean
-  + register(): boolean
+  + register(data): boolean
   + attempt(email, password): boolean
+  + find_by_email(email): User
 }
 
 class Toko {
@@ -22,6 +23,8 @@ class Toko {
   + create(data): boolean
   + update(data): boolean
   + get_toko(user_id): Toko
+  + get_statistics(toko_id): array
+  + get_transactions(toko_id, date_range): array
 }
 
 class Produk {
@@ -34,6 +37,8 @@ class Produk {
   - gambar: string
   - status: string
   + get_produk_by_toko(toko_id): array
+  + search(keyword, kategori): array
+  + find(id): Produk
   + create(data): boolean
   + update(data): boolean
   + delete(id): boolean
@@ -75,6 +80,11 @@ class Order {
   + set_resi(resi): boolean
   + cancel_order(reason): boolean
   + hitung_total(): double
+  + restock_products(): boolean
+  + get_platform_statistics(date_range): array
+  + get_invoice_data(id): array
+  + get_shipping_data(id): array
+  + find(id): Order
 }
 
 class OrderItem {
@@ -96,11 +106,22 @@ class Payment {
   + process_payment(): boolean
   + update_status(status): boolean
   + refund(): boolean
+  + get_payment_status(order_id): string
+}
+
+class Wishlist {
+  - id: int
+  - user_id: int
+  - product_id: int
+  + add_to_wishlist(user_id, product_id): boolean
+  + remove_from_wishlist(id): boolean
+  + get_user_wishlist(user_id): array
 }
 
 User "1" -- "0..1" Toko : memiliki >
 User "1" -- "1" Cart : mempunyai >
 User "1" -- "0..*" Order : melakukan >
+User "1" -- "0..*" Wishlist : memiliki >
 
 Toko "1" -- "0..*" Produk : menjual >
 Toko "1" -- "0..*" Order : menerima >
@@ -111,5 +132,7 @@ CartItem "0..*" -- "1" Produk : merujuk >
 Order "1" -- "1..*" OrderItem : memiliki >
 OrderItem "0..*" -- "1" Produk : merujuk >
 Order "1" -- "0..1" Payment : pembayaran untuk >
+
+Wishlist "0..*" -- "1" Produk : merujuk >
 
 @enduml

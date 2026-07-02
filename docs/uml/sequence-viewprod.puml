@@ -11,7 +11,7 @@ View --> Pembeli : Tampilkan halaman
 Pembeli -> View : Masukkan kata kunci / kategori
 View -> Controller : GET /produk/search?q=keyword
 
-Controller -> Model : search produk(keyword, kategori)
+Controller -> Model : search(keyword, kategori)
 Model -> Database : query products
 Database --> Model : results
 Model --> Controller : results

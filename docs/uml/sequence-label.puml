@@ -8,7 +8,7 @@ participant Database
 Penjual -> View : Akses halaman Daftar Pesanan\nPilih pesanan siap dikirim\nKlik "Cetak Label Pengiriman"
 View -> Controller : GET /seller/orders/{id}/label
 
-Controller -> Model : get shipping data(id)
+Controller -> Model : get_shipping_data(id)
 Model -> Database : query (Alamat Pembeli, Ekspedisi, Resi, Penjual)
 Database --> Model : result
 Model --> Controller : result

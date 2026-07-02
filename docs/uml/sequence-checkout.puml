@@ -34,6 +34,9 @@ Controller -> Model : create_order(data)
 Model -> Database : insert order & order_items
 Database --> Model : success
 Model --> Controller : success
+Controller -> Model : process_payment()
+Model -> Database : insert payment
+Database --> Model : success
 Controller -> Controller : Set status "Menunggu Pembayaran"
 Controller -> Controller : Kirim notifikasi pembayaran
 Controller --> View : Redirect to payment page
