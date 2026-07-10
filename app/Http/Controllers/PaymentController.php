@@ -13,54 +13,70 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        // Show payments for the buyer
+        $payments = \App\Models\Payment::whereHas('order', function($q) {
+            $q->where('user_id', auth()->id());
+        })->with('order.toko')->latest()->paginate(10);
+
+        return view('buyer.payments.index', compact('payments'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $order_id = $request->query('order_id');
+        if (!$order_id) {
+            return redirect()->route('buyer.orders.index')->with('error', 'Pilih pesanan yang akan dibayar.');
+        }
+
+        $order = \App\Models\Order::where('user_id', auth()->id())
+            ->where('id', $order_id)
+            ->where('status', 'menunggu_pembayaran')
+            ->firstOrFail();
+
+        return view('buyer.payments.create', compact('order'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorePaymentRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'metode_pembayaran' => 'required|string',
+            'bukti_pembayaran' => 'required|image|max:2048', // 2MB Max
+        ]);
+
+        $order = \App\Models\Order::where('user_id', auth()->id())
+            ->where('id', $request->order_id)
+            ->where('status', 'menunggu_pembayaran')
+            ->firstOrFail();
+
+        // Handle file upload
+        // For simulation we just store the name or simulate upload.
+        // In real world: $path = $request->file('bukti_pembayaran')->store('payments', 'public');
+        $path = $request->file('bukti_pembayaran')->store('payments', 'public');
+
+        $payment = \App\Models\Payment::create([
+            'order_id' => $order->id,
+            'tanggal_bayar' => now(),
+            'jumlah_bayar' => $order->total_bayar,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'bukti_pembayaran' => $path,
+            'status' => 'pending', // Menunggu konfirmasi
+        ]);
+
+        $order->update(['status' => 'dibayar']); // Update status to dibayar or proses verifikasi
+
+        return redirect()->route('buyer.payments.index')->with('success', 'Pembayaran berhasil disubmit. Menunggu verifikasi.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Payment $payment)
+    public function show(\App\Models\Payment $payment)
     {
-        //
+        if ($payment->order->user_id !== auth()->id()) abort(403);
+        
+        return view('buyer.payments.show', compact('payment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePaymentRequest $request, Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Payment $payment)
-    {
-        //
-    }
+    // other methods not strictly needed for buyer
+    public function edit(\App\Models\Payment $payment) {}
+    public function update(Request $request, \App\Models\Payment $payment) {}
+    public function destroy(\App\Models\Payment $payment) {}
 }

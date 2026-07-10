@@ -13,54 +13,35 @@ class WishlistController extends Controller
      */
     public function index()
     {
-        //
+        $wishlists = \App\Models\Wishlist::where('user_id', auth()->id())->with('produk.toko')->latest()->paginate(10);
+        return view('buyer.wishlist.index', compact('wishlists'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'produk_id' => 'required|exists:produks,id',
+        ]);
+
+        \App\Models\Wishlist::firstOrCreate([
+            'user_id' => auth()->id(),
+            'product_id' => $request->produk_id,
+        ]);
+
+        return redirect()->back()->with('success', 'Produk ditambahkan ke wishlist.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreWishlistRequest $request)
+    public function destroy($id)
     {
-        //
+        $wishlist = \App\Models\Wishlist::where('user_id', auth()->id())->findOrFail($id);
+        $wishlist->delete();
+
+        return redirect()->back()->with('success', 'Produk dihapus dari wishlist.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Wishlist $wishlist)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Wishlist $wishlist)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateWishlistRequest $request, Wishlist $wishlist)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Wishlist $wishlist)
-    {
-        //
-    }
+    // other methods
+    public function create() {}
+    public function show(\App\Models\Wishlist $wishlist) {}
+    public function edit(\App\Models\Wishlist $wishlist) {}
+    public function update(Request $request, \App\Models\Wishlist $wishlist) {}
 }

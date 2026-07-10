@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'TokoKita') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,23 +14,47 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <body class="font-sans antialiased bg-gray-100" x-data="{ sidebarOpen: false }">
+        <div class="flex h-screen overflow-hidden">
+            <!-- Sidebar -->
+            @include('layouts.sidebar')
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+            <!-- Main Content Area -->
+            <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                <!-- Top Navigation -->
+                @include('layouts.navigation')
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <!-- Flash Messages -->
+                <div class="px-4 sm:px-6 lg:px-8 mt-4">
+                    @if(session('success'))
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <span class="block sm:inline">{{ session('error') }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Page Heading -->
+                @if (isset($header))
+                    <header class="bg-white shadow mt-4 mx-4 sm:mx-6 lg:mx-8 rounded-lg">
+                        <div class="py-6 px-4 sm:px-6 lg:px-8 text-gray-800 font-semibold text-xl">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endif
+
+                <!-- Page Content -->
+                <main class="flex-grow p-4 sm:p-6 lg:p-8">
+                    {{ $slot }}
+                </main>
+
+                <!-- Footer -->
+                @include('layouts.footer')
+            </div>
         </div>
     </body>
 </html>

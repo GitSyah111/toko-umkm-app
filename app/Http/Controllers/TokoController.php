@@ -13,7 +13,8 @@ class TokoController extends Controller
      */
     public function index()
     {
-        //
+        $tokos = Toko::where('user_id', auth()->id())->paginate(10);
+        return view('seller.toko.index', compact('tokos'));
     }
 
     /**
@@ -21,7 +22,7 @@ class TokoController extends Controller
      */
     public function create()
     {
-        //
+        return view('seller.toko.create');
     }
 
     /**
@@ -29,7 +30,16 @@ class TokoController extends Controller
      */
     public function store(StoreTokoRequest $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_toko' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'alamat' => 'required|string',
+        ]);
+
+        $validated['user_id'] = auth()->id();
+        Toko::create($validated);
+
+        return redirect()->route('seller.toko.index')->with('success', 'Toko berhasil dibuat.');
     }
 
     /**
@@ -37,7 +47,8 @@ class TokoController extends Controller
      */
     public function show(Toko $toko)
     {
-        //
+        if ($toko->user_id !== auth()->id()) abort(403);
+        return view('seller.toko.show', compact('toko'));
     }
 
     /**
@@ -45,7 +56,8 @@ class TokoController extends Controller
      */
     public function edit(Toko $toko)
     {
-        //
+        if ($toko->user_id !== auth()->id()) abort(403);
+        return view('seller.toko.edit', compact('toko'));
     }
 
     /**
@@ -53,7 +65,17 @@ class TokoController extends Controller
      */
     public function update(UpdateTokoRequest $request, Toko $toko)
     {
-        //
+        if ($toko->user_id !== auth()->id()) abort(403);
+
+        $validated = $request->validate([
+            'nama_toko' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'alamat' => 'required|string',
+        ]);
+
+        $toko->update($validated);
+
+        return redirect()->route('seller.toko.index')->with('success', 'Toko berhasil diperbarui.');
     }
 
     /**
@@ -61,6 +83,9 @@ class TokoController extends Controller
      */
     public function destroy(Toko $toko)
     {
-        //
+        if ($toko->user_id !== auth()->id()) abort(403);
+        $toko->delete();
+        
+        return redirect()->route('seller.toko.index')->with('success', 'Toko berhasil dihapus.');
     }
 }

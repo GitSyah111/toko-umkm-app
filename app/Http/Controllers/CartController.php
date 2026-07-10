@@ -13,54 +13,56 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $cart = \App\Models\Cart::firstOrCreate(['user_id' => auth()->id()]);
+        $cartItems = $cart->items()->with('produk.toko')->get();
+        return view('buyer.cart.index', compact('cart', 'cartItems'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'produk_id' => 'required|exists:produks,id',
+            'kuantitas' => 'required|integer|min:1',
+        ]);
+
+        $cart = \App\Models\Cart::firstOrCreate(['user_id' => auth()->id()]);
+        
+        $cartItem = $cart->items()->where('product_id', $request->produk_id)->first();
+        if ($cartItem) {
+            $cartItem->increment('kuantitas', $request->kuantitas);
+        } else {
+            $cart->items()->create([
+                'product_id' => $request->produk_id,
+                'kuantitas' => $request->kuantitas,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCartRequest $request)
+    public function update(\Illuminate\Http\Request $request, $id)
     {
-        //
+        $request->validate([
+            'kuantitas' => 'required|integer|min:1',
+        ]);
+
+        $cartItem = \App\Models\CartItem::whereHas('cart', function($q) {
+            $q->where('user_id', auth()->id());
+        })->findOrFail($id);
+
+        $cartItem->update(['kuantitas' => $request->kuantitas]);
+
+        return redirect()->back()->with('success', 'Kuantitas berhasil diperbarui.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Cart $cart)
+    public function destroy($id)
     {
-        //
-    }
+        $cartItem = \App\Models\CartItem::whereHas('cart', function($q) {
+            $q->where('user_id', auth()->id());
+        })->findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cart $cart)
-    {
-        //
-    }
+        $cartItem->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCartRequest $request, Cart $cart)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Cart $cart)
-    {
-        //
+        return redirect()->back()->with('success', 'Produk dihapus dari keranjang.');
     }
 }
