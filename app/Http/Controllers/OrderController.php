@@ -84,4 +84,11 @@ class OrderController extends Controller
     {
         // Not used typically, use cancel instead
     }
+    public function printInvoice(\App\Models\Order $order)
+    {
+        if ($order->user_id !== auth()->id()) abort(403);
+        $order->load(['items.produk', 'toko', 'payment', 'user']);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', compact('order'));
+        return $pdf->stream('invoice-'.$order->id.'.pdf');
+    }
 }

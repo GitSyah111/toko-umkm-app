@@ -139,8 +139,9 @@
                 </div>
             </div>
 
-            <div class="mt-6">
+            <div class="flex justify-between items-center mt-6">
                 <a href="{{ route('buyer.orders.index') }}" class="text-indigo-600 hover:text-indigo-900">&larr; Kembali ke Daftar Pesanan</a>
+                <a href="{{ route('buyer.orders.invoice', $order->id) }}" target="_blank" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded shadow">Cetak Invoice (PDF)</a>
             </div>
         </div>
     </div>

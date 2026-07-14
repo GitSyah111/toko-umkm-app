@@ -33,4 +33,19 @@ class SellerOrderController extends Controller
         $order->update($validated);
         return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
     }
+    public function printInvoice(\App\Models\Order $order)
+    {
+        if ($order->toko->user_id !== auth()->id()) abort(403);
+        $order->load(['items.produk', 'user', 'payment', 'toko']);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', compact('order'));
+        return $pdf->stream('invoice-'.$order->id.'.pdf');
+    }
+
+    public function printShippingLabel(\App\Models\Order $order)
+    {
+        if ($order->toko->user_id !== auth()->id()) abort(403);
+        $order->load(['items.produk', 'user', 'toko']);
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.shipping_label', compact('order'));
+        return $pdf->stream('shipping-label-'.$order->id.'.pdf');
+    }
 }

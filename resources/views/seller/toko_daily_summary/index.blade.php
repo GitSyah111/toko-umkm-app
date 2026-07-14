@@ -11,7 +11,11 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-medium text-gray-900">Summary List</h3>
-                        <a href="{{ route('seller.toko-summary.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Create New</a>
+                        <div class="flex gap-2">
+                            <a href="{{ route('seller.toko-summary.sales-pdf') }}" target="_blank" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">Cetak Rekap Penjualan</a>
+                            <a href="{{ route('seller.toko-summary.profit-pdf') }}" target="_blank" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">Cetak Laba Bersih</a>
+                            <a href="{{ route('seller.toko-summary.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Create New</a>
+                        </div>
                     </div>
                     
                     @if (session('success'))

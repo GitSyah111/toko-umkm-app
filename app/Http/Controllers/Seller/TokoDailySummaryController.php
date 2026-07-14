@@ -76,4 +76,21 @@ class TokoDailySummaryController extends Controller
         $this->tokoSummaryService->delete($toko_summary);
         return redirect()->route('seller.toko-summary.index')->with('success', 'Summary deleted successfully.');
     }
+    public function printSalesRecap(\Illuminate\Http\Request $request)
+    {
+        $toko = Auth::user()->toko;
+        if (!$toko) abort(403);
+        $data = TokoDailySummary::where('toko_id', $toko->id)->orderBy('tanggal', 'desc')->get();
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.sales_recap', compact('data', 'toko'));
+        return $pdf->stream('sales-recap.pdf');
+    }
+
+    public function printNetProfit(\Illuminate\Http\Request $request)
+    {
+        $toko = Auth::user()->toko;
+        if (!$toko) abort(403);
+        $data = TokoDailySummary::where('toko_id', $toko->id)->orderBy('tanggal', 'desc')->get();
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.net_profit', compact('data', 'toko'));
+        return $pdf->stream('net-profit.pdf');
+    }
 }

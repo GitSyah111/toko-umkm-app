@@ -13,6 +13,7 @@ class TokoDailySummary extends Model
         'toko_id',
         'tanggal',
         'total_revenue',
+        'total_hpp',
         'total_orders',
     ];
 

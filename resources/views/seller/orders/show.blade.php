@@ -128,8 +128,12 @@
                 </table>
             </div>
 
-            <div class="flex justify-end gap-2 mt-6">
-                <a href="{{ route('seller.orders.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Kembali ke Daftar</a>
+            <div class="flex justify-between items-center mt-6">
+                <a href="{{ route('seller.orders.index') }}" class="text-indigo-600 hover:text-indigo-900">&larr; Kembali ke Daftar</a>
+                <div class="flex gap-2">
+                    <a href="{{ route('seller.orders.shipping-label', $order->id) }}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow">Cetak Label Pengiriman</a>
+                    <a href="{{ route('seller.orders.invoice', $order->id) }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">Cetak Invoice</a>
+                </div>
             </div>
         </div>
     </div>

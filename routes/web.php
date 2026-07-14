@@ -40,7 +40,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:penjual'])->prefix('seller')->name('seller.')->group(function () {
     Route::resource('toko', TokoController::class);
     Route::resource('produk', ProdukController::class);
+    Route::get('orders/{order}/invoice', [SellerOrderController::class, 'printInvoice'])->name('orders.invoice');
+    Route::get('orders/{order}/shipping-label', [SellerOrderController::class, 'printShippingLabel'])->name('orders.shipping-label');
     Route::resource('orders', SellerOrderController::class)->only(['index', 'show', 'update']);
+    Route::get('toko-summary/pdf-sales', [App\Http\Controllers\Seller\TokoDailySummaryController::class, 'printSalesRecap'])->name('toko-summary.sales-pdf');
+    Route::get('toko-summary/pdf-profit', [App\Http\Controllers\Seller\TokoDailySummaryController::class, 'printNetProfit'])->name('toko-summary.profit-pdf');
     Route::resource('toko-summary', App\Http\Controllers\Seller\TokoDailySummaryController::class);
 });
 
@@ -49,6 +53,7 @@ use App\Http\Controllers\ReviewController;
 // Role: Pembeli (Buyer)
 Route::middleware(['auth', 'role:pembeli'])->prefix('buyer')->name('buyer.')->group(function () {
     Route::resource('cart', CartController::class);
+    Route::get('orders/{order}/invoice', [OrderController::class, 'printInvoice'])->name('orders.invoice');
     Route::resource('orders', OrderController::class);
     Route::resource('payments', PaymentController::class)->only(['index', 'create', 'store', 'show']);
     Route::resource('wishlist', WishlistController::class);
