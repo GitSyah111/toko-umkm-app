@@ -34,58 +34,20 @@ class OrderController extends Controller
         return view('buyer.orders.create', compact('cartItems', 'totalHarga'));
     }
 
-    public function store(Request $request)
+    public function store(\Illuminate\Http\Request $request, \App\Services\OrderService $orderService)
     {
         $request->validate([
             'alamat_pengiriman' => 'required|string',
         ]);
 
-        $cart = \App\Models\Cart::where('user_id', auth()->id())->first();
-        if (!$cart || $cart->items->isEmpty()) {
-            return redirect()->route('buyer.cart.index')->with('error', 'Keranjang Anda kosong.');
+        try {
+            $orderService->checkoutFromCart(
+                auth()->id(),
+                $request->alamat_pengiriman
+            );
+        } catch (\Exception $e) {
+            return redirect()->route('buyer.cart.index')->with('error', $e->getMessage());
         }
-
-        $cartItems = $cart->items()->with('produk')->get();
-        
-        // Group items by toko to create multiple orders if from different shops
-        $groupedItems = $cartItems->groupBy(function($item) {
-            return $item->produk->toko_id;
-        });
-
-        \Illuminate\Support\Facades\DB::transaction(function() use ($groupedItems, $request, $cart) {
-            foreach ($groupedItems as $tokoId => $items) {
-                $totalHarga = 0;
-                foreach ($items as $item) {
-                    $totalHarga += $item->produk->harga * $item->kuantitas;
-                }
-                
-                $ongkir = 15000; // Simplified ongkir calculation
-
-                $order = \App\Models\Order::create([
-                    'user_id' => auth()->id(),
-                    'toko_id' => $tokoId,
-                    'tanggal_order' => now(),
-                    'status' => 'menunggu_pembayaran',
-                    'total_harga' => $totalHarga,
-                    'ongkir' => $ongkir,
-                    'total_bayar' => $totalHarga + $ongkir,
-                    'alamat_pengiriman' => $request->alamat_pengiriman,
-                ]);
-
-                foreach ($items as $item) {
-                    \App\Models\OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $item->product_id,
-                        'kuantitas' => $item->kuantitas,
-                        'harga_satuan' => $item->produk->harga,
-                        'subtotal' => $item->produk->harga * $item->kuantitas,
-                    ]);
-                }
-            }
-
-            // Clear cart
-            $cart->items()->delete();
-        });
 
         return redirect()->route('buyer.orders.index')->with('success', 'Pesanan berhasil dibuat. Silakan lakukan pembayaran.');
     }

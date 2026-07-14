@@ -13,12 +13,13 @@ Workflow ini memandu AI agent untuk menerima nama entitas sebagai input dan seca
 3. Tentukan scope / role (misal: admin, seller, atau buyer) untuk menentukan letak namespace, route, dan view.
 
 ## Langkah 2: Buat Komponen Backend (Artisan Commands)
-Gunakan tool terminal untuk menjalankan perintah berikut:
+Gunakan tool terminal untuk menjalankan perintah berikut (atau buat file secara manual jika perintah artisan tidak tersedia untuk komponen tersebut):
 1. **Migration & Model**: `php artisan make:model NamaEntitas -m`
 2. **Requests**: 
    - `php artisan make:request StoreNamaEntitasRequest`
    - `php artisan make:request UpdateNamaEntitasRequest`
 3. **Controller**: `php artisan make:controller NamaEntitasController --resource`
+4. **Service**: Buat file `app/Services/NamaEntitasService.php` secara manual. Service class ini bertugas menangani logika bisnis yang kompleks agar Controller tetap bersih.
 
 ## Langkah 3: Modifikasi Model
 Buka file Model (`app/Models/NamaEntitas.php`) dan pastikan:
@@ -38,16 +39,16 @@ Buka `StoreNamaEntitasRequest` dan `UpdateNamaEntitasRequest`:
 - Daftarkan validasi pada method `rules()`.
 
 ## Langkah 6: Modifikasi Controller
-Buka `NamaEntitasController` dan gunakan Eloquent untuk CRUD. Pastikan struktur method konsisten:
+Buka `NamaEntitasController` dan gunakan Eloquent untuk membaca data (Read), sedangkan untuk operasi simpan, ubah, dan hapus (Write), delegasikan ke `NamaEntitasService` melalui injeksi (*Dependency Injection*). Pastikan struktur method konsisten:
 - **`index()`**: Ambil data (contoh `NamaEntitas::paginate(10);`) dan passing ke view `index`.
 - **`create()`**: Return view `create`.
-- **`store()`**: Gunakan `StoreNamaEntitasRequest`, simpan data (`NamaEntitas::create($validated)`), redirect ke `index` dengan pesan sukses.
+- **`store()`**: Injeksi `NamaEntitasService`, gunakan `StoreNamaEntitasRequest`, delegasikan penyimpanan data ke Service, redirect ke `index` dengan pesan sukses.
 - **`show()`**: Gunakan route model binding, return view `show`.
 - **`edit()`**: Return view `edit`.
-- **`update()`**: Gunakan `UpdateNamaEntitasRequest`, perbarui data (`$model->update($validated)`), redirect ke `index` dengan pesan sukses.
-- **`destroy()`**: Hapus data (`$model->delete()`), redirect ke `index` dengan pesan sukses.
+- **`update()`**: Injeksi `NamaEntitasService`, gunakan `UpdateNamaEntitasRequest`, delegasikan pembaruan data ke Service, redirect ke `index` dengan pesan sukses.
+- **`destroy()`**: Injeksi `NamaEntitasService`, delegasikan penghapusan data ke Service, redirect ke `index` dengan pesan sukses.
 
-*Catatan: Pastikan otorisasi (jika ada peran/toko tertentu) diterapkan pada setiap method, serupa dengan `ProdukController`.*
+*Catatan: Pastikan otorisasi (jika ada peran/toko tertentu) diterapkan pada setiap method, serupa dengan `ProdukController`. Controller hanya bertugas menangani HTTP Request/Response, validasi (melalui Form Request), dan delegasi ke Service.*
 
 ## Langkah 7: Modifikasi Route
 Buka file route terkait (contoh: `routes/web.php`):

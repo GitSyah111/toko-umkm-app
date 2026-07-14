@@ -11,3 +11,10 @@ export const getBuyerCredentials = () => {
     password: 'password123',
   };
 };
+
+export const getAdminCredentials = () => {
+  return {
+    email: 'admin@toko.com',
+    password: 'password123',
+  };
+};

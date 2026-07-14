@@ -31,7 +31,7 @@ class OrderSeeder extends Seeder
         // distribute orders over the last 30 days
         
         for ($i = 0; $i < 100; $i++) {
-            $buyerId = rand(5, 14);
+            $buyerId = rand(6, 15);
             $tokoId = rand(1, 3);
             
             $status = $statuses[array_rand($statuses)];

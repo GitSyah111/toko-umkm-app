@@ -36,7 +36,7 @@ class PaymentController extends Controller
         return view('buyer.payments.create', compact('order'));
     }
 
-    public function store(Request $request)
+    public function store(\Illuminate\Http\Request $request, \App\Services\PaymentService $paymentService)
     {
         $request->validate([
             'order_id' => 'required|exists:orders,id',
@@ -44,26 +44,12 @@ class PaymentController extends Controller
             'bukti_pembayaran' => 'required|image|max:2048', // 2MB Max
         ]);
 
-        $order = \App\Models\Order::where('user_id', auth()->id())
-            ->where('id', $request->order_id)
-            ->where('status', 'menunggu_pembayaran')
-            ->firstOrFail();
-
-        // Handle file upload
-        // For simulation we just store the name or simulate upload.
-        // In real world: $path = $request->file('bukti_pembayaran')->store('payments', 'public');
-        $path = $request->file('bukti_pembayaran')->store('payments', 'public');
-
-        $payment = \App\Models\Payment::create([
-            'order_id' => $order->id,
-            'tanggal_bayar' => now(),
-            'jumlah_bayar' => $order->total_bayar,
-            'metode_pembayaran' => $request->metode_pembayaran,
-            'bukti_pembayaran' => $path,
-            'status' => 'pending', // Menunggu konfirmasi
-        ]);
-
-        $order->update(['status' => 'dibayar']); // Update status to dibayar or proses verifikasi
+        $paymentService->processPayment(
+            auth()->id(),
+            $request->order_id,
+            $request->metode_pembayaran,
+            $request->file('bukti_pembayaran')
+        );
 
         return redirect()->route('buyer.payments.index')->with('success', 'Pembayaran berhasil disubmit. Menunggu verifikasi.');
     }

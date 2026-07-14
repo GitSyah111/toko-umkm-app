@@ -14,13 +14,23 @@ class UserSeeder extends Seeder
         $now = Carbon::now();
         $password = Hash::make('password123');
 
-        $users = [];
+        $users = [
+            [
+                'id' => 1,
+                'name' => 'Admin Utama',
+                'email' => 'admin@toko.com',
+                'password' => $password,
+                'role' => 'admin',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]
+        ];
 
         // 4 Sellers
         $sellers = ['Budi Santoso', 'Siti Aminah', 'Agus Prayitno', 'Dani Testing'];
         foreach ($sellers as $index => $name) {
             $users[] = [
-                'id' => $index + 1,
+                'id' => $index + 2,
                 'name' => $name,
                 'email' => strtolower(explode(' ', $name)[0]) . '@seller.com',
                 'password' => $password,
@@ -37,7 +47,7 @@ class UserSeeder extends Seeder
         ];
         foreach ($buyers as $index => $name) {
             $users[] = [
-                'id' => $index + 5,
+                'id' => $index + 6,
                 'name' => $name,
                 'email' => strtolower(explode(' ', $name)[0]) . '@buyer.com',
                 'password' => $password,

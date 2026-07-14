@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Admin\PlatformDailySummaryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'role:penjual'])->prefix('seller')->name('seller.')->
     Route::resource('toko', TokoController::class);
     Route::resource('produk', ProdukController::class);
     Route::resource('orders', SellerOrderController::class)->only(['index', 'show', 'update']);
+    Route::resource('toko-summary', App\Http\Controllers\Seller\TokoDailySummaryController::class);
 });
 
 use App\Http\Controllers\ReviewController;
@@ -56,6 +58,7 @@ Route::middleware(['auth', 'role:pembeli'])->prefix('buyer')->name('buyer.')->gr
 // Role: Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('platform-summary', PlatformDailySummaryController::class);
 });
 
 require __DIR__.'/auth.php';

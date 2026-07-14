@@ -18,24 +18,18 @@ class CartController extends Controller
         return view('buyer.cart.index', compact('cart', 'cartItems'));
     }
 
-    public function store(Request $request)
+    public function store(\Illuminate\Http\Request $request, \App\Services\CartService $cartService)
     {
         $request->validate([
             'produk_id' => 'required|exists:produks,id',
             'kuantitas' => 'required|integer|min:1',
         ]);
 
-        $cart = \App\Models\Cart::firstOrCreate(['user_id' => auth()->id()]);
-        
-        $cartItem = $cart->items()->where('product_id', $request->produk_id)->first();
-        if ($cartItem) {
-            $cartItem->increment('kuantitas', $request->kuantitas);
-        } else {
-            $cart->items()->create([
-                'product_id' => $request->produk_id,
-                'kuantitas' => $request->kuantitas,
-            ]);
-        }
+        $cartService->addToCart(
+            auth()->id(),
+            $request->produk_id,
+            $request->kuantitas
+        );
 
         return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang.');
     }

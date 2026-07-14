@@ -15,7 +15,7 @@ class TokoSeeder extends Seeder
         $tokos = [
             [
                 'id' => 1,
-                'user_id' => 1, // Budi Santoso
+                'user_id' => 2, // Budi Santoso
                 'nama_toko' => 'Budi Jaya Elektronik',
                 'deskripsi' => 'Menjual berbagai macam barang elektronik murah dan berkualitas.',
                 'alamat' => 'Jl. Kebon Jeruk No. 15, Jakarta Barat',
@@ -24,7 +24,7 @@ class TokoSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'user_id' => 2, // Siti Aminah
+                'user_id' => 3, // Siti Aminah
                 'nama_toko' => 'Siti Fashion & Hijab',
                 'deskripsi' => 'Pusat busana muslim dan hijab kekinian produksi lokal.',
                 'alamat' => 'Pasar Tanah Abang Blok B, Jakarta Pusat',
@@ -33,7 +33,7 @@ class TokoSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'user_id' => 3, // Agus Prayitno
+                'user_id' => 4, // Agus Prayitno
                 'nama_toko' => 'Agus Kuliner Nusantara',
                 'deskripsi' => 'Oleh-oleh khas daerah dan camilan tradisional Indonesia.',
                 'alamat' => 'Jl. Malioboro No. 45, Yogyakarta',
