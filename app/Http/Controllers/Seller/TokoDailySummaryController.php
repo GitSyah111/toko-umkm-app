@@ -93,4 +93,18 @@ class TokoDailySummaryController extends Controller
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.net_profit', compact('data', 'toko'));
         return $pdf->stream('net-profit.pdf');
     }
+
+    public function exportSalesRecapExcel()
+    {
+        $toko = Auth::user()->toko;
+        if (!$toko) abort(403);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\SalesRecapExport($toko->id), 'sales-recap.xlsx');
+    }
+
+    public function exportNetProfitExcel()
+    {
+        $toko = Auth::user()->toko;
+        if (!$toko) abort(403);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\NetProfitExport($toko->id), 'net-profit.xlsx');
+    }
 }

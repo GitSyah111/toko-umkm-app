@@ -117,4 +117,11 @@ class ProdukController extends Controller
 
         return redirect()->route('seller.produk.index')->with('success', 'Produk berhasil dihapus.');
     }
+
+    public function exportLowStockExcel()
+    {
+        $toko = auth()->user()->toko;
+        if (!$toko) abort(403);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\LowStockExport($toko->id), 'low-stock-produk.xlsx');
+    }
 }

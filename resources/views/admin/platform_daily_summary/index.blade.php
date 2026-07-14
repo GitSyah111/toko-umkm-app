@@ -11,7 +11,10 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-medium text-gray-900">Summary List</h3>
-                        <a href="{{ route('admin.platform-summary.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Create New</a>
+                        <div class="flex gap-2">
+                            <a href="{{ route('admin.platform-summary.excel') }}" class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 transition">Export Kinerja Platform (Excel)</a>
+                            <a href="{{ route('admin.platform-summary.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Create New</a>
+                        </div>
                     </div>
                     
                     @if (session('success'))

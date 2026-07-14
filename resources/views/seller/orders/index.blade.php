@@ -5,8 +5,9 @@
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
-            <div class="mb-6">
+            <div class="mb-6 flex justify-between items-center">
                 <h2 class="text-lg font-medium">Daftar Pesanan</h2>
+                <a href="{{ route('seller.orders.export-cancelled') }}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">Export Pesanan Dibatalkan (Excel)</a>
             </div>
 
             <div class="overflow-x-auto">

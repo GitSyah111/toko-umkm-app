@@ -48,4 +48,11 @@ class SellerOrderController extends Controller
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.shipping_label', compact('order'));
         return $pdf->stream('shipping-label-'.$order->id.'.pdf');
     }
+
+    public function exportCancelledExcel()
+    {
+        $toko = auth()->user()->toko;
+        if (!$toko) abort(403);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\CancelledOrdersExport($toko->id), 'cancelled-orders.xlsx');
+    }
 }

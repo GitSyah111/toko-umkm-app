@@ -7,9 +7,14 @@
         <div class="p-6 text-gray-900">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-lg font-medium">Daftar Produk</h2>
-                <a href="{{ route('seller.produk.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Tambah Produk
-                </a>
+                <div class="flex gap-2">
+                    <a href="{{ route('seller.produk.export-low-stock') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+                        Export Peringatan Stok (Excel)
+                    </a>
+                    <a href="{{ route('seller.produk.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Tambah Produk
+                    </a>
+                </div>
             </div>
 
             <div class="mb-6 bg-gray-50 p-4 rounded-lg">

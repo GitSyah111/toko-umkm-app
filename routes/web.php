@@ -39,12 +39,16 @@ Route::middleware('auth')->group(function () {
 // Role: Penjual (Seller)
 Route::middleware(['auth', 'role:penjual'])->prefix('seller')->name('seller.')->group(function () {
     Route::resource('toko', TokoController::class);
+    Route::get('produk/export-low-stock', [ProdukController::class, 'exportLowStockExcel'])->name('produk.export-low-stock');
     Route::resource('produk', ProdukController::class);
     Route::get('orders/{order}/invoice', [SellerOrderController::class, 'printInvoice'])->name('orders.invoice');
     Route::get('orders/{order}/shipping-label', [SellerOrderController::class, 'printShippingLabel'])->name('orders.shipping-label');
+    Route::get('orders/export-cancelled', [SellerOrderController::class, 'exportCancelledExcel'])->name('orders.export-cancelled');
     Route::resource('orders', SellerOrderController::class)->only(['index', 'show', 'update']);
     Route::get('toko-summary/pdf-sales', [App\Http\Controllers\Seller\TokoDailySummaryController::class, 'printSalesRecap'])->name('toko-summary.sales-pdf');
     Route::get('toko-summary/pdf-profit', [App\Http\Controllers\Seller\TokoDailySummaryController::class, 'printNetProfit'])->name('toko-summary.profit-pdf');
+    Route::get('toko-summary/excel-sales', [App\Http\Controllers\Seller\TokoDailySummaryController::class, 'exportSalesRecapExcel'])->name('toko-summary.sales-excel');
+    Route::get('toko-summary/excel-profit', [App\Http\Controllers\Seller\TokoDailySummaryController::class, 'exportNetProfitExcel'])->name('toko-summary.profit-excel');
     Route::resource('toko-summary', App\Http\Controllers\Seller\TokoDailySummaryController::class);
 });
 
@@ -63,6 +67,7 @@ Route::middleware(['auth', 'role:pembeli'])->prefix('buyer')->name('buyer.')->gr
 // Role: Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('platform-summary/excel-performance', [PlatformDailySummaryController::class, 'exportPerformanceExcel'])->name('platform-summary.excel');
     Route::resource('platform-summary', PlatformDailySummaryController::class);
 });
 

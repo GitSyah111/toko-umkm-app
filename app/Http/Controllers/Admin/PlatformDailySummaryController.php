@@ -55,4 +55,9 @@ class PlatformDailySummaryController extends Controller
         $this->platformSummaryService->delete($platform_summary);
         return redirect()->route('admin.platform-summary.index')->with('success', 'Summary deleted successfully.');
     }
+
+    public function exportPerformanceExcel()
+    {
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\PlatformPerformanceExport(), 'platform-performance.xlsx');
+    }
 }
