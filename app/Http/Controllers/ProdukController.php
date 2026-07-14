@@ -16,7 +16,12 @@ class ProdukController extends Controller
         // Only show products from shops owned by the logged-in seller
         $produks = Produk::whereHas('toko', function ($query) {
             $query->where('user_id', auth()->id());
-        })->with('toko')->paginate(10);
+        })
+        ->filter(request(['search', 'kategori', 'min_harga', 'max_harga']))
+        ->with('toko')
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
 
         return view('seller.produk.index', compact('produks'));
     }
@@ -41,6 +46,7 @@ class ProdukController extends Controller
         $validated = $request->validate([
             'toko_id' => 'required|exists:tokos,id',
             'nama_produk' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:255',
             'deskripsi' => 'nullable|string',
             'harga' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
@@ -85,6 +91,7 @@ class ProdukController extends Controller
         $validated = $request->validate([
             'toko_id' => 'required|exists:tokos,id',
             'nama_produk' => 'required|string|max:255',
+            'kategori' => 'nullable|string|max:255',
             'deskripsi' => 'nullable|string',
             'harga' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',

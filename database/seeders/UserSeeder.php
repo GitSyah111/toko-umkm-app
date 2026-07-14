@@ -16,15 +16,15 @@ class UserSeeder extends Seeder
 
         $users = [];
 
-        // 3 Sellers
-        $sellers = ['Budi Santoso', 'Siti Aminah', 'Agus Prayitno'];
+        // 4 Sellers
+        $sellers = ['Budi Santoso', 'Siti Aminah', 'Agus Prayitno', 'Dani Testing'];
         foreach ($sellers as $index => $name) {
             $users[] = [
                 'id' => $index + 1,
                 'name' => $name,
                 'email' => strtolower(explode(' ', $name)[0]) . '@seller.com',
                 'password' => $password,
-                'role' => 'seller',
+                'role' => 'penjual',
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -37,11 +37,11 @@ class UserSeeder extends Seeder
         ];
         foreach ($buyers as $index => $name) {
             $users[] = [
-                'id' => $index + 4,
+                'id' => $index + 5,
                 'name' => $name,
                 'email' => strtolower(explode(' ', $name)[0]) . '@buyer.com',
                 'password' => $password,
-                'role' => 'buyer',
+                'role' => 'pembeli',
                 'created_at' => $now,
                 'updated_at' => $now,
             ];

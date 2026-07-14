@@ -42,12 +42,15 @@ Route::middleware(['auth', 'role:penjual'])->prefix('seller')->name('seller.')->
     Route::resource('orders', SellerOrderController::class)->only(['index', 'show', 'update']);
 });
 
+use App\Http\Controllers\ReviewController;
+
 // Role: Pembeli (Buyer)
 Route::middleware(['auth', 'role:pembeli'])->prefix('buyer')->name('buyer.')->group(function () {
     Route::resource('cart', CartController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('payments', PaymentController::class)->only(['index', 'create', 'store', 'show']);
     Route::resource('wishlist', WishlistController::class);
+    Route::resource('reviews', ReviewController::class);
 });
 
 // Role: Admin

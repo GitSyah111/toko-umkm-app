@@ -13,6 +13,7 @@ class Produk extends Model
     protected $fillable = [
         'toko_id',
         'nama_produk',
+        'kategori',
         'deskripsi',
         'harga',
         'stok',
@@ -38,5 +39,29 @@ class Produk extends Model
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class, 'product_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'product_id');
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->where('nama_produk', 'like', '%' . $search . '%');
+        });
+
+        $query->when($filters['kategori'] ?? false, function ($query, $kategori) {
+            return $query->where('kategori', $kategori);
+        });
+
+        $query->when($filters['min_harga'] ?? false, function ($query, $minHarga) {
+            return $query->where('harga', '>=', $minHarga);
+        });
+
+        $query->when($filters['max_harga'] ?? false, function ($query, $maxHarga) {
+            return $query->where('harga', '<=', $maxHarga);
+        });
     }
 }

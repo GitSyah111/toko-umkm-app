@@ -31,6 +31,14 @@
                 </div>
 
                 <div class="mb-4">
+                    <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori</label>
+                    <input type="text" name="kategori" id="kategori" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('kategori', $produk->kategori) }}">
+                    @error('kategori')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
                     <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                     <textarea name="deskripsi" id="deskripsi" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">{{ old('deskripsi', $produk->deskripsi) }}</textarea>
                     @error('deskripsi')

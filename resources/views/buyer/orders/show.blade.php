@@ -93,6 +93,9 @@
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
                                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Qty</th>
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                                @if($order->status == 'selesai')
+                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -110,20 +113,25 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium text-right">
                                     Rp {{ number_format($item->subtotal, 0, ',', '.') }}
                                 </td>
+                                @if($order->status == 'selesai')
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                                        <a href="{{ route('buyer.reviews.create', ['order_id' => $order->id, 'product_id' => $item->product_id]) }}" class="text-indigo-600 hover:text-indigo-900 font-medium bg-indigo-50 hover:bg-indigo-100 px-3 py-1 rounded-md">Beri Ulasan</a>
+                                    </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
                         <tfoot class="bg-gray-50 font-bold">
                             <tr>
-                                <td colspan="3" class="px-6 py-4 text-right text-sm text-gray-900">Total Harga</td>
+                                <td colspan="{{ $order->status == 'selesai' ? 4 : 3 }}" class="px-6 py-4 text-right text-sm text-gray-900">Total Harga</td>
                                 <td class="px-6 py-4 text-right text-sm text-gray-900">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="px-6 py-4 text-right text-sm text-gray-900">Ongkos Kirim</td>
+                                <td colspan="{{ $order->status == 'selesai' ? 4 : 3 }}" class="px-6 py-4 text-right text-sm text-gray-900">Ongkos Kirim</td>
                                 <td class="px-6 py-4 text-right text-sm text-gray-900">Rp {{ number_format($order->ongkir, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
-                                <td colspan="3" class="px-6 py-4 text-right text-base text-gray-900">Total Pembayaran</td>
+                                <td colspan="{{ $order->status == 'selesai' ? 4 : 3 }}" class="px-6 py-4 text-right text-base text-gray-900">Total Pembayaran</td>
                                 <td class="px-6 py-4 text-right text-base text-indigo-700">Rp {{ number_format($order->total_bayar, 0, ',', '.') }}</td>
                             </tr>
                         </tfoot>
