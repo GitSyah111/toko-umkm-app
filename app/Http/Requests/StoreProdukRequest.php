@@ -22,7 +22,15 @@ class StoreProdukRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'toko_id' => 'required|exists:tokos,id',
+            'nama_produk' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'deskripsi' => 'nullable|string',
+            'harga_pokok' => 'required|numeric|min:0',
+            'harga' => 'required|numeric|min:0|gte:harga_pokok',
+            'stok' => 'required|integer|min:0',
+            'berat' => 'required|integer|min:1',
+            'status' => 'required|in:aktif,nonaktif',
         ];
     }
 }

@@ -14,9 +14,12 @@ test.describe('Seller Produk CRUD', () => {
     // Select first toko
     await sellerPage.getByLabel('Toko').selectOption({ index: 1 });
     await sellerPage.getByLabel('Nama Produk').fill('Produk E2E Playwright');
+    await sellerPage.getByLabel('Kategori').selectOption({ index: 1 });
     await sellerPage.getByLabel('Deskripsi').fill('Deskripsi produk testing');
-    await sellerPage.getByLabel('Harga (Rp)').fill('15000');
+    await sellerPage.getByLabel('Harga Pokok (HPP) Rp').fill('10000');
+    await sellerPage.getByLabel('Harga Jual (Rp)').fill('15000');
     await sellerPage.getByLabel('Stok').fill('10');
+    await sellerPage.getByLabel('Berat (gram)').fill('1000');
     await sellerPage.getByLabel('Status').selectOption('aktif');
     
     await sellerPage.getByRole('button', { name: 'Simpan' }).click();
@@ -33,7 +36,7 @@ test.describe('Seller Produk CRUD', () => {
     await row.getByRole('link', { name: 'Edit' }).click();
     
     await expect(sellerPage.getByText(/Edit Produk:/i)).toBeVisible();
-    await sellerPage.getByLabel('Harga (Rp)').fill('20000');
+    await sellerPage.getByLabel('Harga Jual (Rp)').fill('20000');
     await sellerPage.getByRole('button', { name: 'Perbarui' }).click();
 
     // Verify update

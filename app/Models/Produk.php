@@ -13,14 +13,20 @@ class Produk extends Model
     protected $fillable = [
         'toko_id',
         'nama_produk',
-        'kategori',
+        'category_id',
         'deskripsi',
         'harga_pokok',
         'harga',
         'stok',
+        'berat',
         'gambar',
         'status',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
     public function toko()
     {
@@ -53,8 +59,8 @@ class Produk extends Model
             return $query->where('nama_produk', 'like', '%' . $search . '%');
         });
 
-        $query->when($filters['kategori'] ?? false, function ($query, $kategori) {
-            return $query->where('kategori', $kategori);
+        $query->when($filters['category_id'] ?? false, function ($query, $categoryId) {
+            return $query->where('category_id', $categoryId);
         });
 
         $query->when($filters['min_harga'] ?? false, function ($query, $minHarga) {

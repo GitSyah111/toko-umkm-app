@@ -43,9 +43,9 @@
             <!-- Ulasan Produk -->
             <div class="mt-8 border-t border-gray-200 pt-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4">Ulasan Produk</h3>
-                @if($produk->reviews && $produk->reviews->count() > 0)
+                @if($produk->reviews && $produk->reviews->where('status', 'approved')->count() > 0)
                     <div class="space-y-4">
-                        @foreach($produk->reviews as $review)
+                        @foreach($produk->reviews->where('status', 'approved') as $review)
                             <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
                                 <div class="flex items-center justify-between mb-2">
                                     <div class="font-semibold text-gray-800">{{ $review->user->name ?? 'Pembeli' }}</div>

@@ -11,6 +11,15 @@ class ProdukSeeder extends Seeder
     public function run(): void
     {
         $now = Carbon::now();
+
+        // Create Categories first
+        $categories = [
+            ['id' => 1, 'name' => 'Elektronik', 'slug' => 'elektronik', 'created_at' => $now, 'updated_at' => $now],
+            ['id' => 2, 'name' => 'Fashion', 'slug' => 'fashion', 'created_at' => $now, 'updated_at' => $now],
+            ['id' => 3, 'name' => 'Kuliner', 'slug' => 'kuliner', 'created_at' => $now, 'updated_at' => $now],
+        ];
+        DB::table('categories')->insert($categories);
+
         $produks = [];
         $idCounter = 1;
 
@@ -24,15 +33,19 @@ class ProdukSeeder extends Seeder
         ];
         
         foreach ($elektronik as $nama) {
+            $hargaJual = rand(15, 250) * 1000;
             $produks[] = [
                 'id' => $idCounter++,
                 'toko_id' => 1,
+                'category_id' => 1,
                 'nama_produk' => $nama,
                 'deskripsi' => 'Deskripsi untuk ' . $nama . ' dengan kualitas terbaik dan garansi terjamin.',
-                'harga' => rand(15, 250) * 1000,
+                'harga_pokok' => $hargaJual * 0.7, // 30% margin
+                'harga' => $hargaJual,
+                'berat' => rand(100, 2000),
                 'stok' => rand(10, 100),
                 'gambar' => 'default_produk.jpg',
-                'status' => 'active',
+                'status' => 'aktif',
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -48,15 +61,19 @@ class ProdukSeeder extends Seeder
         ];
 
         foreach ($fashion as $nama) {
+            $hargaJual = rand(25, 150) * 1000;
             $produks[] = [
                 'id' => $idCounter++,
                 'toko_id' => 2,
+                'category_id' => 2,
                 'nama_produk' => $nama,
                 'deskripsi' => 'Deskripsi untuk ' . $nama . '. Bahan nyaman dipakai seharian, cocok untuk gaya kasual.',
-                'harga' => rand(25, 150) * 1000,
+                'harga_pokok' => $hargaJual * 0.6, // 40% margin
+                'harga' => $hargaJual,
+                'berat' => rand(200, 800),
                 'stok' => rand(20, 200),
                 'gambar' => 'default_produk.jpg',
-                'status' => 'active',
+                'status' => 'aktif',
                 'created_at' => $now,
                 'updated_at' => $now,
             ];
@@ -72,15 +89,19 @@ class ProdukSeeder extends Seeder
         ];
 
         foreach ($kuliner as $nama) {
+            $hargaJual = rand(10, 80) * 1000;
             $produks[] = [
                 'id' => $idCounter++,
                 'toko_id' => 3,
+                'category_id' => 3,
                 'nama_produk' => $nama,
                 'deskripsi' => 'Deskripsi untuk ' . $nama . '. Dibuat dari bahan pilihan, rasanya dijamin nagih!',
-                'harga' => rand(10, 80) * 1000,
+                'harga_pokok' => $hargaJual * 0.5, // 50% margin
+                'harga' => $hargaJual,
+                'berat' => rand(100, 500),
                 'stok' => rand(30, 300),
                 'gambar' => 'default_produk.jpg',
-                'status' => 'active',
+                'status' => 'aktif',
                 'created_at' => $now,
                 'updated_at' => $now,
             ];

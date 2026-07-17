@@ -16,6 +16,7 @@ class Review extends Model
         'order_id',
         'rating',
         'komentar',
+        'status',
     ];
 
     public function user()

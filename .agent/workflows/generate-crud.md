@@ -20,6 +20,7 @@ Gunakan tool terminal untuk menjalankan perintah berikut (atau buat file secara 
    - `php artisan make:request UpdateNamaEntitasRequest`
 3. **Controller**: `php artisan make:controller NamaEntitasController --resource`
 4. **Service**: Buat file `app/Services/NamaEntitasService.php` secara manual. Service class ini bertugas menangani logika bisnis yang kompleks agar Controller tetap bersih.
+5. **Observer (Opsional)**: Jika entitas membutuhkan efek samping saat *create*, *update*, atau *delete* (contoh: otomatis memotong stok saat order dibuat), jalankan `php artisan make:observer NamaEntitasObserver --model=NamaEntitas` dan daftarkan di `EventServiceProvider.php`.
 
 ## Langkah 3: Modifikasi Model
 Buka file Model (`app/Models/NamaEntitas.php`) dan pastikan:

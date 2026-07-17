@@ -56,6 +56,7 @@ class OrderService
                         'product_id' => $item->product_id,
                         'kuantitas' => $item->kuantitas,
                         'harga_satuan' => $item->produk->harga,
+                        'hpp_satuan' => $item->produk->harga_pokok,
                         'subtotal' => $item->produk->harga * $item->kuantitas,
                     ]);
                 }

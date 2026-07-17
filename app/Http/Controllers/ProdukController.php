@@ -35,7 +35,8 @@ class ProdukController extends Controller
         if ($tokos->isEmpty()) {
             return redirect()->route('seller.toko.index')->with('error', 'Anda harus membuat toko terlebih dahulu sebelum menambahkan produk.');
         }
-        return view('seller.produk.create', compact('tokos'));
+        $categories = \App\Models\Category::all();
+        return view('seller.produk.create', compact('tokos', 'categories'));
     }
 
     /**
@@ -43,15 +44,7 @@ class ProdukController extends Controller
      */
     public function store(StoreProdukRequest $request)
     {
-        $validated = $request->validate([
-            'toko_id' => 'required|exists:tokos,id',
-            'nama_produk' => 'required|string|max:255',
-            'kategori' => 'nullable|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
-            'status' => 'required|in:aktif,nonaktif',
-        ]);
+        $validated = $request->validated();
 
         // Ensure the selected toko belongs to the user
         $toko = \App\Models\Toko::where('id', $validated['toko_id'])->where('user_id', auth()->id())->firstOrFail();
@@ -77,8 +70,9 @@ class ProdukController extends Controller
     {
         if ($produk->toko->user_id !== auth()->id()) abort(403);
         $tokos = \App\Models\Toko::where('user_id', auth()->id())->get();
+        $categories = \App\Models\Category::all();
         
-        return view('seller.produk.edit', compact('produk', 'tokos'));
+        return view('seller.produk.edit', compact('produk', 'tokos', 'categories'));
     }
 
     /**
@@ -88,15 +82,7 @@ class ProdukController extends Controller
     {
         if ($produk->toko->user_id !== auth()->id()) abort(403);
 
-        $validated = $request->validate([
-            'toko_id' => 'required|exists:tokos,id',
-            'nama_produk' => 'required|string|max:255',
-            'kategori' => 'nullable|string|max:255',
-            'deskripsi' => 'nullable|string',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
-            'status' => 'required|in:aktif,nonaktif',
-        ]);
+        $validated = $request->validated();
         
         // Ensure the selected toko belongs to the user
         $toko = \App\Models\Toko::where('id', $validated['toko_id'])->where('user_id', auth()->id())->firstOrFail();

@@ -66,3 +66,11 @@ class NamaModel extends Model
         return $this->belongsTo(Produk::class, 'product_id');
     }
 ```
+
+## Side Effects (Observers)
+
+Hindari meletakkan logika efek samping (*side-effects*) yang berkaitan langsung dengan perubahan state model (seperti pengurangan stok, pencatatan log otomatis, sinkronisasi data terkait) di dalam Controller atau Service. Gunakan **Model Observers**.
+
+1. Buat observer dengan perintah `php artisan make:observer NamaObserver --model=NamaModel`.
+2. Daftarkan observer di dalam method `boot` pada `app/Providers/EventServiceProvider.php`.
+3. Gunakan event seperti `created`, `updated`, `deleted`, atau `restored` untuk memicu side-effects. Hal ini memastikan bahwa perubahan data akan selalu memicu efek samping terlepas dari tempat aksi tersebut dipanggil (misalnya dari Controller, Job, atau Console Command).

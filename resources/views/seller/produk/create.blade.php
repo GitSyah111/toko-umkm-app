@@ -39,9 +39,14 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori</label>
-                    <input type="text" name="kategori" id="kategori" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('kategori') }}">
-                    @error('kategori')
+                    <label for="category_id" class="block text-sm font-medium text-gray-700">Kategori</label>
+                    <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+                        <option value="">Pilih Kategori</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -56,18 +61,35 @@
 
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label for="harga" class="block text-sm font-medium text-gray-700">Harga (Rp)</label>
+                        <label for="harga_pokok" class="block text-sm font-medium text-gray-700">Harga Pokok (HPP) Rp</label>
+                        <input type="number" name="harga_pokok" id="harga_pokok" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" min="0" value="{{ old('harga_pokok') }}" required>
+                        @error('harga_pokok')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="harga" class="block text-sm font-medium text-gray-700">Harga Jual (Rp)</label>
                         <input type="number" name="harga" id="harga" x-model="harga" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" min="0" required>
                         <p x-show="!isHargaValid" class="text-red-500 text-xs mt-1" style="display: none;">Harga tidak boleh negatif.</p>
                         @error('harga')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label for="stok" class="block text-sm font-medium text-gray-700">Stok</label>
                         <input type="number" name="stok" id="stok" x-model="stok" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" min="0" step="1" required>
                         <p x-show="!isStokValid" class="text-red-500 text-xs mt-1" style="display: none;">Stok harus angka bulat dan tidak negatif.</p>
                         @error('stok')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="berat" class="block text-sm font-medium text-gray-700">Berat (gram)</label>
+                        <input type="number" name="berat" id="berat" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" min="1" step="1" value="{{ old('berat', 1000) }}" required>
+                        @error('berat')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>

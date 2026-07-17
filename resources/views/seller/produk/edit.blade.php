@@ -31,9 +31,14 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="kategori" class="block text-sm font-medium text-gray-700">Kategori</label>
-                    <input type="text" name="kategori" id="kategori" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('kategori', $produk->kategori) }}">
-                    @error('kategori')
+                    <label for="category_id" class="block text-sm font-medium text-gray-700">Kategori</label>
+                    <select name="category_id" id="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+                        <option value="">Pilih Kategori</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id', $produk->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -48,16 +53,33 @@
 
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label for="harga" class="block text-sm font-medium text-gray-700">Harga (Rp)</label>
+                        <label for="harga_pokok" class="block text-sm font-medium text-gray-700">Harga Pokok (HPP) Rp</label>
+                        <input type="number" name="harga_pokok" id="harga_pokok" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('harga_pokok', $produk->harga_pokok) }}" min="0" required>
+                        @error('harga_pokok')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="harga" class="block text-sm font-medium text-gray-700">Harga Jual (Rp)</label>
                         <input type="number" name="harga" id="harga" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('harga', $produk->harga) }}" min="0" required>
                         @error('harga')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
                     <div>
                         <label for="stok" class="block text-sm font-medium text-gray-700">Stok</label>
                         <input type="number" name="stok" id="stok" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('stok', $produk->stok) }}" min="0" required>
                         @error('stok')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="berat" class="block text-sm font-medium text-gray-700">Berat (gram)</label>
+                        <input type="number" name="berat" id="berat" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('berat', $produk->berat) }}" min="1" required>
+                        @error('berat')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>

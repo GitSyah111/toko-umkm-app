@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\SellerOrderController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Admin\PlatformDailySummaryController;
+use App\Http\Controllers\Admin\SellerPerformanceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,8 +67,16 @@ Route::middleware(['auth', 'role:pembeli'])->prefix('buyer')->name('buyer.')->gr
 // Role: Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     Route::get('platform-summary/excel-performance', [PlatformDailySummaryController::class, 'exportPerformanceExcel'])->name('platform-summary.excel');
     Route::resource('platform-summary', PlatformDailySummaryController::class);
+    
+    // Review Analysis
+    Route::get('reviews/analysis', [App\Http\Controllers\Admin\ReviewAnalysisController::class, 'index'])->name('reviews.analysis');
+    Route::patch('reviews/{review}/moderate', [App\Http\Controllers\Admin\ReviewAnalysisController::class, 'moderate'])->name('reviews.moderate');
+
+    // Seller Performance
+    Route::get('seller-performance', [SellerPerformanceController::class, 'index'])->name('seller-performance');
 });
 
 require __DIR__.'/auth.php';
