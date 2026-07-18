@@ -75,7 +75,7 @@ Ikuti langkah-langkah di bawah ini untuk menginstal dan menjalankan aplikasi sec
 
 ## Menjalankan Test Playwright
 
-Proyek ini dilengkapi dengan End-to-End testing menggunakan Playwright. Untuk menjalankan test, gunakan perintah berikut:
+Proyek ini dilengkapi dengan End-to-End testing menggunakan Playwright. Untuk menjalankan test, pastikan aplikasi sedang berjalan, lalu gunakan perintah berikut:
 
 1. **Jalankan test tanpa UI (Headless)**
    ```bash
@@ -95,26 +95,14 @@ Proyek ini dilengkapi dengan End-to-End testing menggunakan Playwright. Untuk me
 ### Halaman Login
 ![Halaman Login](docs/images/login.png)
 
-### Halaman Register
-![Halaman Register](docs/images/register.png)
-
 ### Halaman Pembeli (Katalog)
 ![Halaman Pembeli](docs/images/buyer.png)
 
 ### Halaman Penjual (Dashboard Toko)
 ![Halaman Penjual](docs/images/seller.png)
 
-### Halaman Laporan Penjual (Cetak PDF/Excel)
-![Halaman Laporan Penjual](docs/images/seller-reports.png)
-
 ### Halaman Admin (Dashboard Admin)
 ![Halaman Admin](docs/images/admin.png)
-
-### Halaman Kelola Pengguna (Admin)
-![Halaman Kelola Pengguna Admin](docs/images/admin-users.png)
-
-### Halaman Laporan Admin (Cetak PDF/Excel)
-![Halaman Laporan Admin](docs/images/admin-reports.png)
 
 ## Informasi Penulis
 
