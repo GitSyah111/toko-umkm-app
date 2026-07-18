@@ -8,6 +8,9 @@
                 <a href="{{ route('admin.dashboard', ['refresh' => 1]) }}" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-sm transition ease-in-out duration-150">
                     Refresh Data
                 </a>
+                <a href="{{ route('admin.users.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm transition ease-in-out duration-150">
+                    Manajemen Pengguna
+                </a>
                 <a href="{{ route('admin.categories.index') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded text-sm transition ease-in-out duration-150">
                     Manajemen Kategori
                 </a>

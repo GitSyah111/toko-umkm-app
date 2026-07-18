@@ -67,6 +67,7 @@ Route::middleware(['auth', 'role:pembeli'])->prefix('buyer')->name('buyer.')->gr
 // Role: Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     Route::get('platform-summary/excel-performance', [PlatformDailySummaryController::class, 'exportPerformanceExcel'])->name('platform-summary.excel');
     Route::resource('platform-summary', PlatformDailySummaryController::class);
