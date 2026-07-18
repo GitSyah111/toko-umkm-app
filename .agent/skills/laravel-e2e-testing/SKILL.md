@@ -5,7 +5,7 @@ description: Memandu penulisan test end-to-end Playwright untuk proyek TokoKita 
 
 # Panduan E2E Testing dengan Playwright (TokoKita)
 
-Skill ini mendefinisikan konvensi dan struktur untuk penulisan tes end-to-end menggunakan Playwright di proyek TokoKita.
+Skill ini mendefinisikan konvensi dan struktur untuk penulisan tes end-to-end menggunakan  di proyek TokoKita.
 
 ## 1. Struktur Folder
 

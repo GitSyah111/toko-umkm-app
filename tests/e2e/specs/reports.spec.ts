@@ -48,7 +48,7 @@ test.describe('Printed Reports (PDF)', () => {
     const hasOrder = await detailLink.count() > 0;
     
     if (!hasOrder) {
-      test.skip('No orders found for seller to test PDF generation.');
+      test.skip(true, 'No orders found for seller to test PDF generation.');
       return;
     }
 
@@ -91,7 +91,7 @@ test.describe('Printed Reports (PDF)', () => {
     const hasOrder = await detailLink.count() > 0;
     
     if (!hasOrder) {
-      test.skip('No orders found for buyer to test PDF generation.');
+      test.skip(true, 'No orders found for buyer to test PDF generation.');
       return;
     }
 

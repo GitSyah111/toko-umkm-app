@@ -101,6 +101,12 @@ Proyek ini dilengkapi dengan End-to-End testing menggunakan Playwright. Untuk me
 ### Halaman Pembeli (Katalog)
 ![Halaman Pembeli](docs/images/buyer.png)
 
+### Halaman Dashboard Pembeli (Pesanan)
+![Halaman Dashboard Pembeli](docs/images/buyer-dashboard.png)
+
+### Halaman Keranjang Belanja
+![Halaman Keranjang](docs/images/buyer-cart.png)
+
 ### Halaman Penjual (Dashboard Toko)
 ![Halaman Penjual](docs/images/seller.png)
 
@@ -121,6 +127,18 @@ Proyek ini dilengkapi dengan End-to-End testing menggunakan Playwright. Untuk me
 
 ### Halaman Laporan Admin (Cetak PDF/Excel)
 ![Halaman Laporan Admin](docs/images/admin-reports.png)
+
+### Halaman Statistik GMV & Pendaftaran Toko (Admin)
+![Halaman Statistik GMV & Pendaftaran Toko](docs/images/admin-charts.png)
+
+### Halaman Performa Penjual (Admin)
+![Halaman Performa Penjual Admin](docs/images/admin-seller-performance.png)
+
+### Halaman Analisis Ulasan (Admin)
+![Halaman Analisis Ulasan Admin](docs/images/admin-reviews-analysis.png)
+
+### Halaman Statistik Penjualan & Pesanan (Seller)
+![Halaman Statistik Penjualan Seller](docs/images/seller-charts.png)
 
 ## Informasi Penulis
 

@@ -1,26 +1,26 @@
 {
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build",
-        "test:e2e": "cross-env NODE_OPTIONS=\"--loader tsx\" playwright test",
-        "test:e2e:ui": "cross-env NODE_OPTIONS=\"--loader tsx\" playwright test --ui"
-    },
-    "devDependencies": {
-        "@playwright/test": "^1.61.1",
-        "@tailwindcss/forms": "^0.5.2",
-        "@types/node": "^26.1.1",
-        "alpinejs": "^3.4.2",
-        "autoprefixer": "^10.4.2",
-        "axios": "^1.1.2",
-        "cross-env": "^10.1.0",
-        "laravel-vite-plugin": "^1.0.0",
-        "postcss": "^8.4.31",
-        "tailwindcss": "^3.1.0",
-        "ts-node": "^10.9.2",
-        "tsx": "^4.23.0",
-        "typescript": "^7.0.2",
-        "vite": "^5.0.0"
-    }
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test:e2e": "cross-env NODE_OPTIONS=\"--loader tsx\" playwright test",
+    "test:e2e:ui": "cross-env NODE_OPTIONS=\"--loader tsx\" playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@tailwindcss/forms": "^0.5.2",
+    "@types/node": "^26.1.1",
+    "alpinejs": "^3.4.2",
+    "autoprefixer": "^10.4.2",
+    "axios": "^1.1.2",
+    "cross-env": "^10.1.0",
+    "laravel-vite-plugin": "^1.0.0",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2",
+    "vite": "^5.0.0"
+  }
 }

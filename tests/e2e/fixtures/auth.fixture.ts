@@ -1,11 +1,11 @@
-import { test as base } from '@playwright/test';
+import { test as base, Page } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { getSellerCredentials, getBuyerCredentials, getAdminCredentials } from '../helpers/user';
 
 type AuthFixtures = {
-  sellerPage: typeof base;
-  buyerPage: typeof base;
-  adminPage: typeof base;
+  sellerPage: Page;
+  buyerPage: Page;
+  adminPage: Page;
 };
 
 export const test = base.extend<AuthFixtures>({
