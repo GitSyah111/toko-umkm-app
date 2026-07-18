@@ -145,4 +145,4 @@ Proyek ini dilengkapi dengan End-to-End testing menggunakan Playwright. Untuk me
 - **Nama:** Muhammad Ibnu Ri'ayath Syah
 - **NPM:** 2210010191
 - **Program Studi:** Teknik Informatika
-- **Email:** Syahibnu704@gmail.com
+- **Email:** syahibnu704@gmail.com
