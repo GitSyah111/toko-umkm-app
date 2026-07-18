@@ -28,17 +28,14 @@ class OrderController extends Controller
         // Calculate totals, optionally group by Toko if needed. For simplicity, just sum all up.
         $totalHarga = 0;
         foreach ($cartItems as $item) {
-            $totalHarga += optional($item->produk)->harga * $item->kuantitas;
+            $totalHarga += optional($item->produk)->harga * $item->qty;
         }
 
         return view('buyer.orders.create', compact('cartItems', 'totalHarga'));
     }
 
-    public function store(\Illuminate\Http\Request $request, \App\Services\OrderService $orderService)
+    public function store(StoreOrderRequest $request, \App\Services\OrderService $orderService)
     {
-        $request->validate([
-            'alamat_pengiriman' => 'required|string',
-        ]);
 
         try {
             $orderService->checkoutFromCart(
@@ -64,16 +61,15 @@ class OrderController extends Controller
         // Not used by buyer typically
     }
 
-    public function update(Request $request, \App\Models\Order $order)
+    public function update(\Illuminate\Http\Request $request, \App\Models\Order $order, \App\Services\OrderService $orderService)
     {
         if ($order->user_id !== auth()->id()) abort(403);
         
-        // Buyer can cancel order or confirm delivery
         if ($request->has('cancel')) {
-            $order->update(['status' => 'dibatalkan', 'alasan_pembatalan' => $request->alasan_pembatalan]);
+            $orderService->updateOrderStatus($order, 'cancel', $request->alasan_pembatalan);
             return redirect()->back()->with('success', 'Pesanan dibatalkan.');
         } elseif ($request->has('complete')) {
-            $order->update(['status' => 'selesai']);
+            $orderService->updateOrderStatus($order, 'complete');
             return redirect()->back()->with('success', 'Pesanan diselesaikan.');
         }
 

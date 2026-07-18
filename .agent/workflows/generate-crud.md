@@ -68,3 +68,8 @@ Buat direktori `resources/views/role/nama-entitas/` dan hasilkan 4 file mengguna
 ## Langkah 9: Verifikasi
 - Tinjau kembali seluruh file yang diubah dan pastikan syntax benar.
 - Jika perlu, tampilkan pesan ke user dan tanyakan apakah ada komponen tambahan yang perlu dimodifikasi.
+
+## Langkah 10: Pengujian End-to-End (E2E)
+- Buat file test Playwright baru di `tests/e2e/specs/` untuk entitas ini.
+- Gunakan fixture autentikasi (`sellerPage`, `buyerPage`, atau `adminPage`) sesuai dengan role entitas.
+- Uji minimal skenario 'lihat daftar', 'tambah data', dan 'ubah data'.

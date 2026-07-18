@@ -11,7 +11,7 @@ class StorePaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StorePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'order_id' => 'required|exists:orders,id',
+            'metode_pembayaran' => 'required|string',
+            'bukti_pembayaran' => 'required|image|max:2048',
         ];
     }
 }

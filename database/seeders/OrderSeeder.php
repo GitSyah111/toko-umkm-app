@@ -71,6 +71,7 @@ class OrderSeeder extends Seeder
             
             $orders[] = [
                 'id' => $orderIdCounter,
+                'order_number' => 'INV-' . $orderDate->format('Ymd') . '-' . str_pad($orderIdCounter, 4, '0', STR_PAD_LEFT),
                 'user_id' => $buyerId,
                 'toko_id' => $tokoId,
                 'tanggal_order' => $orderDate,

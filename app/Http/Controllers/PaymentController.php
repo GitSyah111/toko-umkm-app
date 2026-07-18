@@ -36,13 +36,8 @@ class PaymentController extends Controller
         return view('buyer.payments.create', compact('order'));
     }
 
-    public function store(\Illuminate\Http\Request $request, \App\Services\PaymentService $paymentService)
+    public function store(StorePaymentRequest $request, \App\Services\PaymentService $paymentService)
     {
-        $request->validate([
-            'order_id' => 'required|exists:orders,id',
-            'metode_pembayaran' => 'required|string',
-            'bukti_pembayaran' => 'required|image|max:2048', // 2MB Max
-        ]);
 
         $paymentService->processPayment(
             auth()->id(),

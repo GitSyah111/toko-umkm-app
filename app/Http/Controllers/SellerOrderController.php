@@ -20,7 +20,7 @@ class SellerOrderController extends Controller
         return view('seller.orders.show', compact('order'));
     }
 
-    public function update(Request $request, \App\Models\Order $order)
+    public function update(Request $request, \App\Models\Order $order, \App\Services\SellerOrderService $sellerOrderService)
     {
         if ($order->toko->user_id !== auth()->id()) abort(403);
 
@@ -30,7 +30,7 @@ class SellerOrderController extends Controller
             'alasan_pembatalan' => 'nullable|string',
         ]);
 
-        $order->update($validated);
+        $sellerOrderService->updateOrderStatus($order, $validated);
         return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
     }
     public function printInvoice(\App\Models\Order $order)

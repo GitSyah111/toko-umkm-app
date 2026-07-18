@@ -26,7 +26,7 @@ class OrderObserver
         if ($originalStatus === 'menunggu_pembayaran' && in_array($newStatus, ['dibayar', 'diproses', 'dikirim', 'selesai'])) {
             foreach ($order->items as $item) {
                 if ($item->produk) {
-                    $item->produk->decrement('stok', $item->kuantitas);
+                    $item->produk->decrement('stok', $item->qty);
                 }
             }
         }
@@ -35,7 +35,7 @@ class OrderObserver
         if ($newStatus === 'dibatalkan' && in_array($originalStatus, ['dibayar', 'diproses', 'dikirim', 'selesai'])) {
             foreach ($order->items as $item) {
                 if ($item->produk) {
-                    $item->produk->increment('stok', $item->kuantitas);
+                    $item->produk->increment('stok', $item->qty);
                 }
             }
         }

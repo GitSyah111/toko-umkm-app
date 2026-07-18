@@ -44,6 +44,11 @@ class NamaModel extends Model
     ];
 ```
 
+## Konsistensi Penamaan Kolom (Atribut)
+
+Sangat penting untuk memastikan bahwa nama atribut yang digunakan saat manipulasi data (Create, Update, Observer) **benar-benar sama** dengan nama kolom yang terdefinisi di Migration dan `$fillable`.
+Hindari menerjemahkan atau mengubah nama secara sepihak di kode (contoh: di migration `qty`, namun di Service menggunakan `kuantitas`). Ketidaksinkronan ini dapat menyebabkan error insert/update atau data tidak tersimpan.
+
 ## Relasi (Relationships)
 
 1. **Penamaan Method**: Nama method relasi menggunakan `camelCase`. Gunakan bentuk tunggal (singular) untuk relasi `belongsTo` atau `hasOne`, dan bentuk jamak (plural) untuk `hasMany` atau `belongsToMany`.

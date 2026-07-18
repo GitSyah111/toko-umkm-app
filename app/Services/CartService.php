@@ -22,13 +22,13 @@ class CartService
         $cartItem = $cart->items()->where('product_id', $productId)->first();
         
         if ($cartItem) {
-            $cartItem->increment('kuantitas', $quantity);
+            $cartItem->increment('qty', $quantity);
             // Refresh to get the updated attributes
             $cartItem->refresh();
         } else {
             $cartItem = $cart->items()->create([
                 'product_id' => $productId,
-                'kuantitas' => $quantity,
+                'qty' => $quantity,
             ]);
         }
 
