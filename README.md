@@ -89,11 +89,14 @@ Proyek ini dilengkapi dengan End-to-End testing menggunakan Playwright. Untuk me
 
 ## Tangkapan Layar Fitur Utama
 
-### Halaman Beranda
-![Halaman Beranda](docs/images/home.png)
+### Halaman Pembeli (Katalog)
+![Halaman Pembeli](docs/images/buyer.png)
 
-### Halaman Login
-![Halaman Login](docs/images/login.png)
+### Halaman Penjual (Dashboard Toko)
+![Halaman Penjual](docs/images/seller.png)
+
+### Halaman Admin (Dashboard Admin)
+![Halaman Admin](docs/images/admin.png)
 
 ## Informasi Penulis
 
